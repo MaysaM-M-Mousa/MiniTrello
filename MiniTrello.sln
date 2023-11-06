@@ -1,0 +1,53 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.7.34024.191
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{EF7706B3-1C56-4D07-93E7-2C0005632598}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{50DA3B93-9581-40F6-BEA4-D7AB9D3C1883}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MiniTrello.Domain", "MiniTrello.Domain\MiniTrello.Domain.csproj", "{B1F41847-C563-4C3C-AC5F-696DDDCEEFBA}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MiniTrello.Infrastructure", "MiniTrello.Infrastructure\MiniTrello.Infrastructure.csproj", "{E667F03C-3127-4119-976A-F9FA21B3D8E4}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MiniTrello.Application", "MiniTrello.Application\MiniTrello.Application.csproj", "{B97BEFD7-6EC4-4D09-8804-CA77C9F80BB0}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MiniTrello.Web", "MiniTrello.Web\MiniTrello.Web.csproj", "{B0B73337-6A88-4C6E-9829-4DB771D30BF5}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{B1F41847-C563-4C3C-AC5F-696DDDCEEFBA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B1F41847-C563-4C3C-AC5F-696DDDCEEFBA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B1F41847-C563-4C3C-AC5F-696DDDCEEFBA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B1F41847-C563-4C3C-AC5F-696DDDCEEFBA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E667F03C-3127-4119-976A-F9FA21B3D8E4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E667F03C-3127-4119-976A-F9FA21B3D8E4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E667F03C-3127-4119-976A-F9FA21B3D8E4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E667F03C-3127-4119-976A-F9FA21B3D8E4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B97BEFD7-6EC4-4D09-8804-CA77C9F80BB0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B97BEFD7-6EC4-4D09-8804-CA77C9F80BB0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B97BEFD7-6EC4-4D09-8804-CA77C9F80BB0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B97BEFD7-6EC4-4D09-8804-CA77C9F80BB0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B0B73337-6A88-4C6E-9829-4DB771D30BF5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B0B73337-6A88-4C6E-9829-4DB771D30BF5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B0B73337-6A88-4C6E-9829-4DB771D30BF5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B0B73337-6A88-4C6E-9829-4DB771D30BF5}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{B1F41847-C563-4C3C-AC5F-696DDDCEEFBA} = {EF7706B3-1C56-4D07-93E7-2C0005632598}
+		{E667F03C-3127-4119-976A-F9FA21B3D8E4} = {EF7706B3-1C56-4D07-93E7-2C0005632598}
+		{B97BEFD7-6EC4-4D09-8804-CA77C9F80BB0} = {EF7706B3-1C56-4D07-93E7-2C0005632598}
+		{B0B73337-6A88-4C6E-9829-4DB771D30BF5} = {EF7706B3-1C56-4D07-93E7-2C0005632598}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {58005783-A65C-4826-820F-08BF58382C41}
+	EndGlobalSection
+EndGlobal
