@@ -45,6 +45,16 @@ public class Ticket : AggregateRoot
         Apply(@event);
     }
 
+    public void UpdatePriority(Priority priority)
+    {
+        Priority = priority;
+
+        var @event = new TicketPriorityUpdatedDomainEvent(AggregateId, Priority);
+
+        AddUncommittedEvent(@event);
+        Apply(@event);
+    }
+
     public override void When(IDomainEvent @event)
     {
         switch (@event)
@@ -53,6 +63,9 @@ public class Ticket : AggregateRoot
                 Apply((TicketAssignedDomainEvent)@event);
                 break;
             case TicketUnassignedDomainEvent:
+                Apply((TicketUnassignedDomainEvent)@event);
+                break;
+            case TicketPriorityUpdatedDomainEvent:
                 Apply((TicketUnassignedDomainEvent)@event);
                 break;
             default:
@@ -68,5 +81,10 @@ public class Ticket : AggregateRoot
     private void Apply(TicketUnassignedDomainEvent @event)
     {
         Assignee = string.Empty;
+    }
+
+    private void Apply(TicketPriorityUpdatedDomainEvent @event)
+    {
+        Priority = @event.priority;
     }
 }
