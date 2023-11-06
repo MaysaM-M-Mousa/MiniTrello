@@ -8,6 +8,8 @@ public class Ticket : AggregateRoot
 
     public Priority Priority { get; private set; } = Priority.Low;
 
+    public int StoryPoints { get; private set; }
+
     public TicketStatus Status { get; private set; } = TicketStatus.ToDo;
 
     public bool IsCompleted { get; private set; } = false;
