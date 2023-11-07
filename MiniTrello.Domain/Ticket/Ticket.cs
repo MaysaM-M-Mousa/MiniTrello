@@ -31,7 +31,14 @@ public class Ticket : AggregateRoot
 
     public static Ticket Create()
     {
-        return new Ticket(Guid.NewGuid(), string.Empty, Priority.None, TicketStatus.ToDo);
+        var ticket = new Ticket(Guid.NewGuid(), string.Empty, Priority.None, TicketStatus.ToDo);
+
+        var @event = new TicketCreatedDomainEvent(ticket.AggregateId, ticket.Assignee, ticket.Priority, ticket.Status);
+
+        ticket.AddUncommittedEvent(@event);
+        ticket.Apply(@event);
+
+        return ticket;
     }
 
     public void Assign(string assignee)
@@ -166,6 +173,9 @@ public class Ticket : AggregateRoot
     {
         switch (@event)
         {
+            case TicketCreatedDomainEvent:
+                Apply((TicketCreatedDomainEvent)@event);
+                break;
             case TicketAssignedDomainEvent: 
                 Apply((TicketAssignedDomainEvent)@event);
                 break;
@@ -193,6 +203,13 @@ public class Ticket : AggregateRoot
             default:
                 throw new Exception($"Unsupported Event type { @event.GetType().Name }");
         }
+    }
+
+    private void Apply(TicketCreatedDomainEvent @event)
+    {
+        Assignee = @event.Assignee;
+        Priority = @event.Priority;
+        Status = @event.Status;
     }
 
     private void Apply(TicketAssignedDomainEvent @event)
