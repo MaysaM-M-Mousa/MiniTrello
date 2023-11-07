@@ -4,5 +4,5 @@ public interface IDomainEvent
 {
     Guid Id { get; set; }
 
-    DateTime DateTime { get; set; }
+    DateTime OccurredAt { get; set; }
 }
