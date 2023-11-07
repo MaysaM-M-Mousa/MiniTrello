@@ -60,6 +60,16 @@ public class Ticket : AggregateRoot
         Apply(@event);
     }
 
+    public void UpdateStoryPoints(int storyPoints)
+    {
+        StoryPoints = storyPoints;
+
+        var @event = new TicketStoryPointsUpdatedDomainEvent(AggregateId, storyPoints);
+
+        AddUncommittedEvent(@event);
+        Apply(@event);
+    }
+
     public override void When(IDomainEvent @event)
     {
         switch (@event)
@@ -72,6 +82,9 @@ public class Ticket : AggregateRoot
                 break;
             case TicketPriorityUpdatedDomainEvent:
                 Apply((TicketPriorityUpdatedDomainEvent)@event);
+                break;
+            case TicketStoryPointsUpdatedDomainEvent:
+                Apply((TicketStoryPointsUpdatedDomainEvent)@event);
                 break;
             default:
                 throw new Exception($"Unsupported Event type { @event.GetType().Name }");
@@ -91,5 +104,10 @@ public class Ticket : AggregateRoot
     private void Apply(TicketPriorityUpdatedDomainEvent @event)
     {
         Priority = @event.priority;
+    }
+
+    private void Apply(TicketStoryPointsUpdatedDomainEvent @event)
+    {
+        StoryPoints = @event.StoryPoints;
     }
 }
