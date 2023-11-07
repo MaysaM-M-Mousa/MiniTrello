@@ -70,6 +70,26 @@ public class Ticket : AggregateRoot
         Apply(@event);
     }
 
+    public void MoveToInProgress()
+    {
+        if (Status == TicketStatus.InProgress)
+        {
+            return;
+        }
+
+        if (Status == TicketStatus.CodeReview || Status == TicketStatus.Done)
+        {
+            throw new MiniTrelloValidationException("Only Ticket in ToDo or Test lists can be moved to InProgress list!");
+        }
+
+        Status = TicketStatus.InProgress;
+
+        var @event = new TicketMovedToInProgressDomainEvent(AggregateId);
+
+        AddUncommittedEvent(@event);
+        Apply(@event);
+    }
+
     public override void When(IDomainEvent @event)
     {
         switch (@event)
@@ -85,6 +105,9 @@ public class Ticket : AggregateRoot
                 break;
             case TicketStoryPointsUpdatedDomainEvent:
                 Apply((TicketStoryPointsUpdatedDomainEvent)@event);
+                break;
+            case TicketMovedToInProgressDomainEvent:
+                Apply((TicketMovedToInProgressDomainEvent)@event);
                 break;
             default:
                 throw new Exception($"Unsupported Event type { @event.GetType().Name }");
@@ -109,5 +132,10 @@ public class Ticket : AggregateRoot
     private void Apply(TicketStoryPointsUpdatedDomainEvent @event)
     {
         StoryPoints = @event.StoryPoints;
+    }
+
+    private void Apply(TicketMovedToInProgressDomainEvent @event)
+    {
+        Status = TicketStatus.InProgress;
     }
 }
