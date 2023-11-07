@@ -142,7 +142,7 @@ public class Ticket : AggregateRoot
             throw new MiniTrelloValidationException("Only Test tickets can be moved to Done!");
         }
 
-        Status = TicketStatus.Test;
+        Status = TicketStatus.Done;
 
         var @event = new TicketMovedToDoneDomainEvent(AggregateId);
 
