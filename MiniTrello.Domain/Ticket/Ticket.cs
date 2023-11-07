@@ -90,6 +90,66 @@ public class Ticket : AggregateRoot
         Apply(@event);
     }
 
+    public void MoveToCodeReview()
+    {
+        if (Status == TicketStatus.CodeReview)
+        {
+            return;
+        }
+
+        if (Status != TicketStatus.InProgress)
+        {
+            throw new MiniTrelloValidationException("Only InProgress tickets can be moved to CodeReview!");
+        }
+
+        Status = TicketStatus.CodeReview;
+
+        var @event = new TicketMovedToCodeReviewDomainEvent(AggregateId);
+
+        AddUncommittedEvent(@event);
+        Apply(@event);
+    }
+
+    public void MoveToTest()
+    {
+        if (Status == TicketStatus.Test)
+        {
+            return;
+        }
+
+        if (Status != TicketStatus.CodeReview)
+        {
+            throw new MiniTrelloValidationException("Only CodeReview tickets can be moved to Test!");
+        }
+
+        Status = TicketStatus.Test;
+
+        var @event = new TicketMovedToTestDomainEvent(AggregateId);
+
+        AddUncommittedEvent(@event);
+        Apply(@event);
+    }
+
+    public void MoveToDone()
+    {
+        if (Status == TicketStatus.Done)
+        {
+            return;
+        }
+
+        if (Status != TicketStatus.Test)
+        {
+            throw new MiniTrelloValidationException("Only Test tickets can be moved to Done!");
+        }
+
+        Status = TicketStatus.Test;
+
+        var @event = new TicketMovedToDoneDomainEvent(AggregateId);
+
+        AddUncommittedEvent(@event);
+        Apply(@event);
+    }
+
     public override void When(IDomainEvent @event)
     {
         switch (@event)
@@ -108,6 +168,15 @@ public class Ticket : AggregateRoot
                 break;
             case TicketMovedToInProgressDomainEvent:
                 Apply((TicketMovedToInProgressDomainEvent)@event);
+                break;
+            case TicketMovedToCodeReviewDomainEvent:
+                Apply((TicketMovedToCodeReviewDomainEvent)@event);
+                break;
+            case TicketMovedToTestDomainEvent:
+                Apply((TicketMovedToTestDomainEvent)@event);
+                break;
+            case TicketMovedToDoneDomainEvent:
+                Apply((TicketMovedToDoneDomainEvent)@event);
                 break;
             default:
                 throw new Exception($"Unsupported Event type { @event.GetType().Name }");
@@ -137,5 +206,20 @@ public class Ticket : AggregateRoot
     private void Apply(TicketMovedToInProgressDomainEvent @event)
     {
         Status = TicketStatus.InProgress;
+    }
+
+    private void Apply(TicketMovedToCodeReviewDomainEvent @event)
+    {
+        Status = TicketStatus.CodeReview;
+    }
+
+    private void Apply(TicketMovedToTestDomainEvent @event)
+    {
+        Status = TicketStatus.Test;
+    }
+
+    private void Apply(TicketMovedToDoneDomainEvent @event)
+    {
+        Status = TicketStatus.Done;
     }
 }
