@@ -24,6 +24,11 @@ public class Ticket : AggregateRoot
 
     public void Assign(string assignee)
     {
+        if (string.IsNullOrEmpty(assignee))
+        {
+            throw new NullReferenceException(nameof(assignee));
+        }
+
         Assignee = assignee;
 
         var @event = new TicketAssignedDomainEvent(AggregateId, Assignee);
