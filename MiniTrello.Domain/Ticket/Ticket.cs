@@ -6,15 +6,11 @@ namespace MiniTrello.Domain.Ticket;
 
 public class Ticket : AggregateRoot
 {
-    public string Assignee { get; private set; } = string.Empty;
+    public string Assignee { get; private set; }
 
-    public Priority Priority { get; private set; } = Priority.Low;      // regular field
+    public TicketStatus Status { get; private set; }
 
-    public int StoryPoints { get; private set; }                        // regular field
-
-    public TicketStatus Status { get; private set; } = TicketStatus.ToDo;
-
-    public bool IsCompleted { get; private set; } = false;
+    public bool IsCompleted { get; private set; }
 
     public List<Comment> Comments { get; private set; } = new();
 
@@ -22,18 +18,17 @@ public class Ticket : AggregateRoot
     {
     }
 
-    private Ticket(Guid aggregateId, string assignee, Priority priority, TicketStatus status) : base(aggregateId)
+    private Ticket(Guid aggregateId, string assignee, TicketStatus status) : base(aggregateId)
     {
         Assignee = assignee;
-        Priority = priority;
         Status = status;
     }
 
     public static Ticket Create()
     {
-        var ticket = new Ticket(Guid.NewGuid(), string.Empty, Priority.None, TicketStatus.ToDo);
+        var ticket = new Ticket(Guid.NewGuid(), string.Empty, TicketStatus.ToDo);
 
-        var @event = new TicketCreatedDomainEvent(ticket.AggregateId, ticket.Assignee, ticket.Priority, ticket.Status);
+        var @event = new TicketCreatedDomainEvent(ticket.AggregateId, ticket.Assignee, Priority.None, ticket.Status);
 
         ticket.AddUncommittedEvent(@event);
         ticket.Apply(@event);
@@ -71,22 +66,16 @@ public class Ticket : AggregateRoot
 
     public void UpdatePriority(Priority priority)
     {
-        Priority = priority;
-
-        var @event = new TicketPriorityUpdatedDomainEvent(AggregateId, Priority);
+        var @event = new TicketPriorityUpdatedDomainEvent(AggregateId, priority);
 
         AddUncommittedEvent(@event);
-        Apply(@event);
     }
 
     public void UpdateStoryPoints(int storyPoints)
     {
-        StoryPoints = storyPoints;
-
         var @event = new TicketStoryPointsUpdatedDomainEvent(AggregateId, storyPoints);
 
         AddUncommittedEvent(@event);
-        Apply(@event);
     }
 
     public void MoveToInProgress()
@@ -182,12 +171,6 @@ public class Ticket : AggregateRoot
             case TicketUnassignedDomainEvent:
                 Apply((TicketUnassignedDomainEvent)@event);
                 break;
-            case TicketPriorityUpdatedDomainEvent:
-                Apply((TicketPriorityUpdatedDomainEvent)@event);
-                break;
-            case TicketStoryPointsUpdatedDomainEvent:
-                Apply((TicketStoryPointsUpdatedDomainEvent)@event);
-                break;
             case TicketMovedToInProgressDomainEvent:
                 Apply((TicketMovedToInProgressDomainEvent)@event);
                 break;
@@ -200,6 +183,9 @@ public class Ticket : AggregateRoot
             case TicketMovedToDoneDomainEvent:
                 Apply((TicketMovedToDoneDomainEvent)@event);
                 break;
+            case TicketPriorityUpdatedDomainEvent:
+            case TicketStoryPointsUpdatedDomainEvent:
+                break;
             default:
                 throw new Exception($"Unsupported Event type { @event.GetType().Name }");
         }
@@ -208,7 +194,6 @@ public class Ticket : AggregateRoot
     private void Apply(TicketCreatedDomainEvent @event)
     {
         Assignee = @event.Assignee;
-        Priority = @event.Priority;
         Status = @event.Status;
     }
 
@@ -220,16 +205,6 @@ public class Ticket : AggregateRoot
     private void Apply(TicketUnassignedDomainEvent @event)
     {
         Assignee = string.Empty;
-    }
-
-    private void Apply(TicketPriorityUpdatedDomainEvent @event)
-    {
-        Priority = @event.priority;
-    }
-
-    private void Apply(TicketStoryPointsUpdatedDomainEvent @event)
-    {
-        StoryPoints = @event.StoryPoints;
     }
 
     private void Apply(TicketMovedToInProgressDomainEvent @event)
