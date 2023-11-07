@@ -2,8 +2,9 @@
 
 public enum Priority
 {
-    Low = 1,
-    Medium = 2,
-    High = 3,
-    Hotfix = 4
+    None = 1,
+    Low = 2,
+    Medium = 3,
+    High = 4,
+    Hotfix = 5
 }

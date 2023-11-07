@@ -22,6 +22,18 @@ public class Ticket : AggregateRoot
     {
     }
 
+    private Ticket(Guid aggregateId, string assignee, Priority priority, TicketStatus status) : base(aggregateId)
+    {
+        Assignee = assignee;
+        Priority = priority;
+        Status = status;
+    }
+
+    public static Ticket Create()
+    {
+        return new Ticket(Guid.NewGuid(), string.Empty, Priority.None, TicketStatus.ToDo);
+    }
+
     public void Assign(string assignee)
     {
         if (string.IsNullOrEmpty(assignee))
