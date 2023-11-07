@@ -8,9 +8,9 @@ public class Ticket : AggregateRoot
 {
     public string Assignee { get; private set; } = string.Empty;
 
-    public Priority Priority { get; private set; } = Priority.Low;
+    public Priority Priority { get; private set; } = Priority.Low;      // regular field
 
-    public int StoryPoints { get; private set; }
+    public int StoryPoints { get; private set; }                        // regular field
 
     public TicketStatus Status { get; private set; } = TicketStatus.ToDo;
 
@@ -66,7 +66,7 @@ public class Ticket : AggregateRoot
                 Apply((TicketUnassignedDomainEvent)@event);
                 break;
             case TicketPriorityUpdatedDomainEvent:
-                Apply((TicketUnassignedDomainEvent)@event);
+                Apply((TicketPriorityUpdatedDomainEvent)@event);
                 break;
             default:
                 throw new Exception($"Unsupported Event type { @event.GetType().Name }");
