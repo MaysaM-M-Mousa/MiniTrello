@@ -37,7 +37,7 @@ public class Ticket : AggregateRoot
         Apply(@event);
     }
 
-    public void Unassigne()
+    public void Unassign()
     {
         if (string.IsNullOrEmpty(Assignee))
         {
