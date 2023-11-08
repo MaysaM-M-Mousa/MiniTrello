@@ -43,7 +43,7 @@ public class Ticket : AggregateRoot
             throw new NullReferenceException(nameof(assignee));
         }
 
-        var @event = new TicketAssignedDomainEvent(AggregateId, Assignee);
+        var @event = new TicketAssignedDomainEvent(AggregateId, assignee);
 
         AddUncommittedEvent(@event);
         Apply(@event);
