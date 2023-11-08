@@ -148,6 +148,14 @@ public class Ticket : AggregateRoot
         Apply(@event);
     }
 
+    public override void Load(List<IDomainEvent> events)
+    {
+        foreach(var @event in events)
+        {
+            When(@event);
+        }
+    }
+
     public override void When(IDomainEvent @event)
     {
         switch (@event)
