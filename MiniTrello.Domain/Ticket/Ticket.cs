@@ -148,12 +148,16 @@ public class Ticket : AggregateRoot
         Apply(@event);
     }
 
-    public override void Load(List<IDomainEvent> events)
+    public static Ticket Load(Guid aggregateId, List<IDomainEvent> events)
     {
+        var ticket = new Ticket(aggregateId);
+
         foreach(var @event in events)
         {
-            When(@event);
+            ticket.When(@event);
         }
+
+        return ticket;
     }
 
     public override void When(IDomainEvent @event)

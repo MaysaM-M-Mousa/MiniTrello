@@ -8,8 +8,6 @@ public abstract class AggregateRoot
 
     public virtual void When(IDomainEvent @event) { }
 
-    public virtual void Load(List<IDomainEvent> events) { }
-
     public AggregateRoot(Guid aggregateId) => AggregateId = aggregateId;
 
     public IReadOnlyList<IDomainEvent> UncommittedEvents => _uncommittedEvents.ToList();
