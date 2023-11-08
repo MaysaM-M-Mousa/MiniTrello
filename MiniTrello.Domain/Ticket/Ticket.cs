@@ -43,8 +43,6 @@ public class Ticket : AggregateRoot
             throw new NullReferenceException(nameof(assignee));
         }
 
-        Assignee = assignee;
-
         var @event = new TicketAssignedDomainEvent(AggregateId, Assignee);
 
         AddUncommittedEvent(@event);
@@ -90,8 +88,6 @@ public class Ticket : AggregateRoot
             throw new MiniTrelloValidationException("Only Ticket in ToDo or Test lists can be moved to InProgress list!");
         }
 
-        Status = TicketStatus.InProgress;
-
         var @event = new TicketMovedToInProgressDomainEvent(AggregateId);
 
         AddUncommittedEvent(@event);
@@ -109,8 +105,6 @@ public class Ticket : AggregateRoot
         {
             throw new MiniTrelloValidationException("Only InProgress tickets can be moved to CodeReview!");
         }
-
-        Status = TicketStatus.CodeReview;
 
         var @event = new TicketMovedToCodeReviewDomainEvent(AggregateId);
 
@@ -130,8 +124,6 @@ public class Ticket : AggregateRoot
             throw new MiniTrelloValidationException("Only CodeReview tickets can be moved to Test!");
         }
 
-        Status = TicketStatus.Test;
-
         var @event = new TicketMovedToTestDomainEvent(AggregateId);
 
         AddUncommittedEvent(@event);
@@ -149,8 +141,6 @@ public class Ticket : AggregateRoot
         {
             throw new MiniTrelloValidationException("Only Test tickets can be moved to Done!");
         }
-
-        Status = TicketStatus.Done;
 
         var @event = new TicketMovedToDoneDomainEvent(AggregateId);
 
