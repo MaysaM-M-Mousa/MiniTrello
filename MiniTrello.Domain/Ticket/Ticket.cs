@@ -4,7 +4,7 @@ using MiniTrello.Domain.Ticket.DomainEvents;
 
 namespace MiniTrello.Domain.Ticket;
 
-public class Ticket : AggregateRoot
+public sealed class Ticket : AggregateRoot
 {
     public string Assignee { get; private set; }
 
