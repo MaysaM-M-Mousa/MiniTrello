@@ -4,30 +4,35 @@ using MiniTrello.Domain.Ticket.DomainEvents;
 
 namespace MiniTrello.UnitTests.Aggregates.Builders;
 
-public static class TicketBuilder
+public class TicketBuilder
 {
-    public static Ticket CreateUnassignedTicket()
+    private List<IDomainEvent> _events;
+    private Guid _ticketId;
+
+    public TicketBuilder()
     {
-        var ticketId = Guid.NewGuid();
-
-        var events = new List<IDomainEvent>()
-        {
-            new TicketCreatedDomainEvent(ticketId, string.Empty, Priority.None, TicketStatus.ToDo)
-        };
-
-        return Ticket.Load(ticketId, events);
+        _events = new();
+        _ticketId = Guid.NewGuid();
     }
 
-    public static Ticket CreateAssignedTicket()
+    public TicketBuilder AddCreatedEvent()
     {
-        var ticketId = Guid.NewGuid();
+        _events.Add(new TicketCreatedDomainEvent(_ticketId, string.Empty, Priority.None, TicketStatus.ToDo));
+        return this;
+    }
 
-        var events = new List<IDomainEvent>()
-        {
-            new TicketCreatedDomainEvent(ticketId, string.Empty, Priority.None, TicketStatus.ToDo),
-            new TicketAssignedDomainEvent(ticketId, "Maysam")
-        };
+    public TicketBuilder AddAssignedEvent()
+    {
+        _events.Add(new TicketAssignedDomainEvent(_ticketId, "Maysam"));
+        return this;
+    }
 
-        return Ticket.Load(ticketId, events);
+    public Ticket Build()
+    {
+        var ticket = Ticket.Load(_ticketId, _events);
+
+        _events.Clear();
+        
+        return ticket;
     }
 }

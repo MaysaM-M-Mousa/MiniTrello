@@ -10,7 +10,7 @@ public class Ticket_Unassign
     [Fact]
     public void UnassignAlreadyUnassignedTicketFails()
     {
-        var ticket = TicketBuilder.CreateUnassignedTicket();
+        var ticket = new TicketBuilder().BuildUnassignedTicket();
 
         var act = () => ticket.Unassign();
 
@@ -22,7 +22,7 @@ public class Ticket_Unassign
     [Fact]
     public void UnassignAlreadyAssignedTicketSucceeds()
     {
-        var ticket = TicketBuilder.CreateAssignedTicket();
+        var ticket = new TicketBuilder().BuildAssignedTicket();
 
         ticket.Unassign();
 

@@ -11,7 +11,7 @@ public class Ticket_Assign
     [InlineData(null)]
     public void AssigneTicketToNullOrEmptyStringFails(string user)
     {
-        var ticket = TicketBuilder.CreateUnassignedTicket();
+        var ticket = new TicketBuilder().BuildUnassignedTicket();
 
         var act = () => ticket.Assign(user);
 
@@ -21,7 +21,8 @@ public class Ticket_Assign
     [Fact]
     public void AssigneTicketToValidUserSucceeds()
     {
-        var ticket = TicketBuilder.CreateUnassignedTicket();
+        var ticket = new TicketBuilder().BuildUnassignedTicket();
+
         var user = "Maysam";
 
         ticket.Assign(user);
