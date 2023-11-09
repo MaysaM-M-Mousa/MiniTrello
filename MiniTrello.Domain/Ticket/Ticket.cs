@@ -14,7 +14,9 @@ public sealed class Ticket : AggregateRoot
 
     public List<Comment> Comments { get; private set; } = new();
 
-    public Ticket(Guid aggregateId) : base(aggregateId)
+    private Ticket() { }
+
+    private Ticket(Guid aggregateId) : base(aggregateId)
     {
     }
 
