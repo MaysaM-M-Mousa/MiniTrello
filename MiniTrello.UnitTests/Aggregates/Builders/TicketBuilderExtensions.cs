@@ -18,4 +18,46 @@ public static class TicketBuilderExtensions
             .AddAssignedEvent()
             .Build();
     }
+
+    public static Ticket BuildInProgressStatusTicket(this TicketBuilder ticketBuilder)
+    {
+        return ticketBuilder
+            .AddCreatedEvent()
+            .AddAssignedEvent()
+            .AddMovedToInProgressEvent()
+            .Build();
+    }
+
+    public static Ticket BuildCodeReviewStatusTicket(this TicketBuilder ticketBuilder)
+    {
+        return ticketBuilder
+            .AddCreatedEvent()
+            .AddAssignedEvent()
+            .AddMovedToInProgressEvent()
+            .AddMovedToCodeReviewEvent()
+            .Build();
+    }
+
+    public static Ticket BuildTestStatusTicket(this TicketBuilder ticketBuilder)
+    {
+        return ticketBuilder
+            .AddCreatedEvent()
+            .AddAssignedEvent()
+            .AddMovedToInProgressEvent()
+            .AddMovedToCodeReviewEvent()
+            .AddMovedToTestEvent()
+            .Build();
+    }
+
+    public static Ticket BuildDoneStatusTicket(this TicketBuilder ticketBuilder)
+    {
+        return ticketBuilder
+            .AddCreatedEvent()
+            .AddAssignedEvent()
+            .AddMovedToInProgressEvent()
+            .AddMovedToCodeReviewEvent()
+            .AddMovedToTestEvent()
+            .AddMovedToDoneEvent()
+            .Build();
+    }
 }

@@ -27,6 +27,30 @@ public class TicketBuilder
         return this;
     }
 
+    public TicketBuilder AddMovedToInProgressEvent()
+    {
+        _events.Add(new TicketMovedToInProgressDomainEvent(_ticketId));
+        return this;
+    }
+
+    public TicketBuilder AddMovedToCodeReviewEvent()
+    {
+        _events.Add(new TicketMovedToCodeReviewDomainEvent(_ticketId));
+        return this;
+    }
+
+    public TicketBuilder AddMovedToTestEvent()
+    {
+        _events.Add(new TicketMovedToTestDomainEvent(_ticketId));
+        return this;
+    }
+
+    public TicketBuilder AddMovedToDoneEvent()
+    {
+        _events.Add(new TicketMovedToDoneDomainEvent(_ticketId));
+        return this;
+    }
+
     public Ticket Build()
     {
         var ticket = Ticket.Load(_ticketId, _events);
