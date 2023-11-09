@@ -15,7 +15,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MiniTrello.Application", "M
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MiniTrello.Web", "MiniTrello.Web\MiniTrello.Web.csproj", "{B0B73337-6A88-4C6E-9829-4DB771D30BF5}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MiniTrello.UnitTests", "MiniTrello.UnitTests\MiniTrello.UnitTests.csproj", "{6591C908-B18F-4118-858D-B39D15490EF6}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MiniTrello.UnitTests", "MiniTrello.UnitTests\MiniTrello.UnitTests.csproj", "{6591C908-B18F-4118-858D-B39D15490EF6}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MiniTrello.ArchitectureTests", "MiniTrello.ArchitectureTests\MiniTrello.ArchitectureTests.csproj", "{C0976C15-D880-41A4-97AC-9FE34C76B01D}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -43,6 +45,10 @@ Global
 		{6591C908-B18F-4118-858D-B39D15490EF6}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6591C908-B18F-4118-858D-B39D15490EF6}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{6591C908-B18F-4118-858D-B39D15490EF6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C0976C15-D880-41A4-97AC-9FE34C76B01D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C0976C15-D880-41A4-97AC-9FE34C76B01D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C0976C15-D880-41A4-97AC-9FE34C76B01D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C0976C15-D880-41A4-97AC-9FE34C76B01D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -53,6 +59,7 @@ Global
 		{B97BEFD7-6EC4-4D09-8804-CA77C9F80BB0} = {EF7706B3-1C56-4D07-93E7-2C0005632598}
 		{B0B73337-6A88-4C6E-9829-4DB771D30BF5} = {EF7706B3-1C56-4D07-93E7-2C0005632598}
 		{6591C908-B18F-4118-858D-B39D15490EF6} = {50DA3B93-9581-40F6-BEA4-D7AB9D3C1883}
+		{C0976C15-D880-41A4-97AC-9FE34C76B01D} = {50DA3B93-9581-40F6-BEA4-D7AB9D3C1883}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {58005783-A65C-4826-820F-08BF58382C41}
