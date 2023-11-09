@@ -8,7 +8,7 @@ namespace MiniTrello.UnitTests.Aggregates.TicketTests;
 public class Ticket_UpdatePriority
 {
     [Fact]
-    public void UpdatePriorityShouldSucceeds()
+    public void UpdatePriorityShould_Succeeds()
     {
         var ticket = new TicketBuilder().BuildUnassignedTicket();
 

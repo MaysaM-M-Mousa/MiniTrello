@@ -7,7 +7,7 @@ namespace MiniTrello.UnitTests.Aggregates.TicketTests;
 public class Ticket_UpdateStoryPoints
 {
     [Fact]
-    public void UpdateStoryPointsShouldSucceeds()
+    public void UpdateStoryPointsShould_Succeeds()
     {
         var ticket = new TicketBuilder().BuildUnassignedTicket();
 

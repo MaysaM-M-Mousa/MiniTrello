@@ -9,7 +9,7 @@ public class Ticket_Assign
     [Theory]
     [InlineData("")]
     [InlineData(null)]
-    public void AssigneTicketToNullOrEmptyStringFails(string user)
+    public void AssigneTicketTo_NullOrEmptyString_Fails(string user)
     {
         var ticket = new TicketBuilder().BuildUnassignedTicket();
 
@@ -19,7 +19,7 @@ public class Ticket_Assign
     }
 
     [Fact]
-    public void AssigneTicketToValidUserSucceeds()
+    public void AssigneTicketTo_ValidUser_Succeeds()
     {
         var ticket = new TicketBuilder().BuildUnassignedTicket();
 

@@ -8,7 +8,7 @@ namespace MiniTrello.UnitTests.Aggregates.TicketTests;
 public class Ticket_Unassign
 {
     [Fact]
-    public void UnassignAlreadyUnassignedTicketFails()
+    public void UnassignAlready_UnassignedTicket_Fails()
     {
         var ticket = new TicketBuilder().BuildUnassignedTicket();
 
@@ -20,7 +20,7 @@ public class Ticket_Unassign
     }
 
     [Fact]
-    public void UnassignAlreadyAssignedTicketSucceeds()
+    public void UnassignAlready_AssignedTicket_Succeeds()
     {
         var ticket = new TicketBuilder().BuildAssignedTicket();
 

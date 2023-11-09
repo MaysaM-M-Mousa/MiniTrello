@@ -9,7 +9,7 @@ namespace MiniTrello.UnitTests.Aggregates.TicketTests;
 public class Ticket_MoveToDone
 {
     [Fact]
-    public void MovingFromTestToDoneSucceeds()
+    public void MovingFrom_Test_To_Done_Succeeds()
     {
         var ticket = new TicketBuilder().BuildTestStatusTicket();
 
@@ -21,7 +21,7 @@ public class Ticket_MoveToDone
     }
 
     [Fact]
-    public void MovingFromDoneToDoneDoesNothing()
+    public void MovingFrom_Done_ToDone_DoesNothing()
     {
         var ticket = new TicketBuilder().BuildDoneStatusTicket();
 
@@ -32,7 +32,7 @@ public class Ticket_MoveToDone
     }
 
     [Fact]
-    public void MovingFromCodeReviewToDoneDoesNothing()
+    public void MovingFrom_CodeReview_To_Done_DoesNothing()
     {
         var ticket = new TicketBuilder().BuildCodeReviewStatusTicket();
 

@@ -9,7 +9,7 @@ namespace MiniTrello.UnitTests.Aggregates.TicketTests;
 public class Ticket_MoveToCodeReview
 {
     [Fact]
-    public void MovingFromInProgressToCodeReviewSucceeds()
+    public void MovingFrom_InProgress_To_CodeReview_Succeeds()
     {
         var ticket = new TicketBuilder().BuildInProgressStatusTicket();
 
@@ -21,7 +21,7 @@ public class Ticket_MoveToCodeReview
     }
 
     [Fact]
-    public void MovingFromCodeReviewToCodeReviewDoesNothing()
+    public void MovingFrom_CodeReview_To_CodeReview_DoesNothing()
     {
         var ticket = new TicketBuilder().BuildCodeReviewStatusTicket();
 
@@ -32,7 +32,7 @@ public class Ticket_MoveToCodeReview
     }
 
     [Fact]
-    public void MovingFromTestToCodeReviewFails()
+    public void MovingFrom_Test_To_CodeReview_Fails()
     {
         var ticket = new TicketBuilder().BuildTestStatusTicket();
 
