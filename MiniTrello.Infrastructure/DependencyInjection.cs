@@ -8,8 +8,8 @@ public static class DependencyInjection
 {
     public static IServiceCollection AddInfrastructureDependencies(this IServiceCollection services)
     {
-        services.AddScoped<ITicketRepository, InMemoryTicketRepository>();
-        services.AddScoped<ITicketDetailsProjectionRepository, InMemoryTicketDetailsProjectionRepository>();
+        services.AddSingleton<ITicketRepository, InMemoryTicketRepository>();
+        services.AddSingleton<ITicketDetailsProjectionRepository, InMemoryTicketDetailsProjectionRepository>();
 
         return services;
     }
