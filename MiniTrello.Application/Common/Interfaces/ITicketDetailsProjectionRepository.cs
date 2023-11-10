@@ -1,4 +1,6 @@
-﻿namespace MiniTrello.Domain.Ticket.Projections.TicketDetails;
+﻿using MiniTrello.Domain.Ticket.Projections.TicketDetails;
+
+namespace MiniTrello.Application.Common.Interfaces;
 
 public interface ITicketDetailsProjectionRepository
 {

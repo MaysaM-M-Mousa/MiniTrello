@@ -1,6 +1,6 @@
-﻿using MiniTrello.Domain.Exceptions;
+﻿using MiniTrello.Application.Common.Interfaces;
+using MiniTrello.Domain.Exceptions;
 using MiniTrello.Domain.Primitives;
-using MiniTrello.Domain.Ticket;
 
 namespace MiniTrello.Infrastructure.Persistence.Repositories;
 

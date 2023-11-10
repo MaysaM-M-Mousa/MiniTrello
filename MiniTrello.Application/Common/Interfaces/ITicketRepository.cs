@@ -1,6 +1,6 @@
 ﻿using MiniTrello.Domain.Primitives;
 
-namespace MiniTrello.Domain.Ticket;
+namespace MiniTrello.Application.Common.Interfaces;
 
 public interface ITicketRepository
 {
