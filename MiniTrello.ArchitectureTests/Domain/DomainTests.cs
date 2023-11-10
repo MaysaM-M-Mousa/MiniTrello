@@ -1,4 +1,5 @@
 ﻿using FluentAssertions;
+using MediatR;
 using MiniTrello.Domain.Primitives;
 using MiniTrello.Domain.Ticket;
 using NetArchTest.Rules;
@@ -42,6 +43,19 @@ public class DomainTests
         var result = Types.InAssembly(DomainAssembly)
             .Should()
             .NotHaveDependencyOnAll(dependencies)
+            .GetResult();
+
+        result.IsSuccessful.Should().BeTrue();
+    }
+
+    [Fact]
+    public void DomainEvents_Should_Implement_INotification()
+    {
+        var result = Types.InAssembly(DomainAssembly)
+            .That()
+            .ImplementInterface(typeof(IDomainEvent))
+            .Should()
+            .ImplementInterface(typeof(INotification))
             .GetResult();
 
         result.IsSuccessful.Should().BeTrue();
