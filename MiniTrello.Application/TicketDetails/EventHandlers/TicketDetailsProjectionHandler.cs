@@ -14,12 +14,12 @@ internal sealed class TicketDetailsProjectionHandler<TDomainEvent> : INotificati
         _ticketDetailsProjectionRepository = ticketDetailsProjectionRepository;
     }
 
-    public async Task Handle(TDomainEvent notification, CancellationToken cancellationToken)
+    public async Task Handle(TDomainEvent @event, CancellationToken cancellationToken)
     {
-        var projection = await _ticketDetailsProjectionRepository.GetProjectionByTicketId(notification.AggregateId)
+        var projection = await _ticketDetailsProjectionRepository.GetProjectionByTicketId(@event.AggregateId)
             ?? new();
 
-        projection.When(notification);
+        projection.When(@event);
 
         await _ticketDetailsProjectionRepository.SaveProjection(projection);
     }
