@@ -6,10 +6,12 @@ namespace MiniTrello.Application.Ticket.Commands.MoveToDone;
 internal sealed class MoveToDoneCommandHandler : IRequestHandler<MoveToDoneCommand>
 {
     private readonly ITicketRepository _ticketRepository;
+    private readonly IMediator _mediator;
 
-    public MoveToDoneCommandHandler(ITicketRepository ticketRepository)
+    public MoveToDoneCommandHandler(ITicketRepository ticketRepository, IMediator mediator)
     {
         _ticketRepository = ticketRepository;
+        _mediator = mediator;
     }
 
     public async Task Handle(MoveToDoneCommand request, CancellationToken cancellationToken)
@@ -22,7 +24,10 @@ internal sealed class MoveToDoneCommandHandler : IRequestHandler<MoveToDoneComma
 
         await _ticketRepository.SaveEventsAsync(ticket.AggregateId, ticket.UncommittedEvents.ToList());
 
-        // publish domain events
+        foreach (var @event in ticket.UncommittedEvents.ToList())
+        {
+            await _mediator.Publish(@event);
+        }
 
         ticket.ClearUncommittedEvents();
     }

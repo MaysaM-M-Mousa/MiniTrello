@@ -6,10 +6,12 @@ namespace MiniTrello.Application.Ticket.Commands.Unassign;
 internal sealed class UnassignCommandHandler : IRequestHandler<UnassignCommand>
 {
     private readonly ITicketRepository _ticketRepository;
+    private readonly IMediator _mediator;
 
-    public UnassignCommandHandler(ITicketRepository ticketRepository)
+    public UnassignCommandHandler(ITicketRepository ticketRepository, IMediator mediator)
     {
         _ticketRepository = ticketRepository;
+        _mediator = mediator;
     }
 
     public async Task Handle(UnassignCommand request, CancellationToken cancellationToken)
@@ -22,7 +24,10 @@ internal sealed class UnassignCommandHandler : IRequestHandler<UnassignCommand>
 
         await _ticketRepository.SaveEventsAsync(ticket.AggregateId, ticket.UncommittedEvents.ToList());
 
-        // publish domain events
+        foreach (var @event in ticket.UncommittedEvents.ToList())
+        {
+            await _mediator.Publish(@event);
+        }
 
         ticket.ClearUncommittedEvents();
     }
