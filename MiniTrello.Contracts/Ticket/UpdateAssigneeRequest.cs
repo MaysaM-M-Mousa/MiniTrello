@@ -1,6 +1,6 @@
 ﻿namespace MiniTrello.Contracts.Ticket;
 
-public class UpdateAssigneRequest
+public class UpdateAssigneeRequest
 {
     public Guid TicketId { get; set; }
 

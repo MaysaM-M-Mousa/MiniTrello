@@ -79,7 +79,7 @@ namespace MiniTrello.Web.Controllers
         }
 
         [HttpPut("{ticketId}/assignee")]
-        public async Task UpdateAssignee(Guid ticketId, [FromBody] UpdateAssigneRequest request)
+        public async Task UpdateAssignee(Guid ticketId, [FromBody] UpdateAssigneeRequest request)
         {
             if (ticketId != request.TicketId)
             {
