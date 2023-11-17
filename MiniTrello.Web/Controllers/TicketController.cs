@@ -1,10 +1,12 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Mvc;
+using MiniTrello.Application.Ticket.Commands.Assign;
 using MiniTrello.Application.Ticket.Commands.Create;
 using MiniTrello.Application.Ticket.Commands.MoveToCodeReview;
 using MiniTrello.Application.Ticket.Commands.MoveToDone;
 using MiniTrello.Application.Ticket.Commands.MoveToInProgress;
 using MiniTrello.Application.Ticket.Commands.MoveToTest;
+using MiniTrello.Application.Ticket.Commands.Unassign;
 using MiniTrello.Application.Ticket.Commands.UpdatePriority;
 using MiniTrello.Application.Ticket.Commands.UpdateStoryPoints;
 using MiniTrello.Contracts.Ticket;
@@ -54,7 +56,7 @@ namespace MiniTrello.Web.Controllers
             await _mediator.Send(new MoveToDoneCommand(ticketId));
         }
 
-        [HttpPatch("{ticketId}/priority")]
+        [HttpPut("{ticketId}/priority")]
         public async Task UpdatePriority(Guid ticketId, [FromBody] UpdatePriorityRequest request)
         {
             if (ticketId != request.TicketId)
@@ -65,7 +67,7 @@ namespace MiniTrello.Web.Controllers
             await _mediator.Send(new UpdatePriorityCommand(request.TicketId, request.Priority));
         }
 
-        [HttpPatch("{ticketId}/story-points")]
+        [HttpPut("{ticketId}/story-points")]
         public async Task UpdateStoryPoints(Guid ticketId, [FromBody] UpdateStoryPointsRequest request)
         {
             if (ticketId != request.TicketId)
@@ -74,6 +76,23 @@ namespace MiniTrello.Web.Controllers
             }
 
             await _mediator.Send(new UpdateStoryPointsCommand(request.TicketId, request.StoryPoints));
+        }
+
+        [HttpPut("{ticketId}/assignee")]
+        public async Task UpdateAssignee(Guid ticketId, [FromBody] UpdateAssigneRequest request)
+        {
+            if (ticketId != request.TicketId)
+            {
+                throw new MiniTrelloValidationException("Incompatible entity Ids");
+            }
+
+            await _mediator.Send(new AssignCommand(request.TicketId, request.User));
+        }
+
+        [HttpPost("{ticketId}/unassign")]
+        public async Task UnassgineTicket(Guid ticketId)
+        {
+            await _mediator.Send(new UnassignCommand(ticketId));
         }
     }
 }
