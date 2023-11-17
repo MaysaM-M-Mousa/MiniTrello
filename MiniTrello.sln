@@ -17,7 +17,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MiniTrello.Web", "MiniTrell
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MiniTrello.UnitTests", "MiniTrello.UnitTests\MiniTrello.UnitTests.csproj", "{6591C908-B18F-4118-858D-B39D15490EF6}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MiniTrello.ArchitectureTests", "MiniTrello.ArchitectureTests\MiniTrello.ArchitectureTests.csproj", "{C0976C15-D880-41A4-97AC-9FE34C76B01D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MiniTrello.ArchitectureTests", "MiniTrello.ArchitectureTests\MiniTrello.ArchitectureTests.csproj", "{C0976C15-D880-41A4-97AC-9FE34C76B01D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MiniTrello.Contracts", "MiniTrello.Contracts\MiniTrello.Contracts.csproj", "{60FC7743-B88B-467B-978B-6FA66B6575C4}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -49,6 +51,10 @@ Global
 		{C0976C15-D880-41A4-97AC-9FE34C76B01D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C0976C15-D880-41A4-97AC-9FE34C76B01D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C0976C15-D880-41A4-97AC-9FE34C76B01D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{60FC7743-B88B-467B-978B-6FA66B6575C4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{60FC7743-B88B-467B-978B-6FA66B6575C4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{60FC7743-B88B-467B-978B-6FA66B6575C4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{60FC7743-B88B-467B-978B-6FA66B6575C4}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -60,6 +66,7 @@ Global
 		{B0B73337-6A88-4C6E-9829-4DB771D30BF5} = {EF7706B3-1C56-4D07-93E7-2C0005632598}
 		{6591C908-B18F-4118-858D-B39D15490EF6} = {50DA3B93-9581-40F6-BEA4-D7AB9D3C1883}
 		{C0976C15-D880-41A4-97AC-9FE34C76B01D} = {50DA3B93-9581-40F6-BEA4-D7AB9D3C1883}
+		{60FC7743-B88B-467B-978B-6FA66B6575C4} = {EF7706B3-1C56-4D07-93E7-2C0005632598}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {58005783-A65C-4826-820F-08BF58382C41}
