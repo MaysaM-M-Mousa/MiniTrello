@@ -1,6 +1,6 @@
 ﻿using MediatR;
-using MiniTrello.Domain.Ticket.Projections.TicketDetails;
+using MiniTrello.Contracts.TicketDetailsProjection;
 
 namespace MiniTrello.Application.TicketDetails.Queries.GetById;
 
-public sealed record GetByIdQuery(Guid TicketId) : IRequest<TicketDetailsProjection?>;
+public sealed record GetByIdQuery(Guid TicketId) : IRequest<TicketDetailsProjectionResponse>;

@@ -11,6 +11,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\MiniTrello.Contracts\MiniTrello.Contracts.csproj" />
     <ProjectReference Include="..\MiniTrello.Domain\MiniTrello.Domain.csproj" />
   </ItemGroup>
 

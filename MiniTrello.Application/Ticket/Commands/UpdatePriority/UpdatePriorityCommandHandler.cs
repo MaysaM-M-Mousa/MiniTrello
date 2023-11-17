@@ -1,5 +1,6 @@
 ﻿using MediatR;
 using MiniTrello.Application.Common.Interfaces;
+using MiniTrello.Domain.Ticket;
 
 namespace MiniTrello.Application.Ticket.Commands.UpdatePriority;
 
@@ -20,7 +21,9 @@ internal sealed class UpdatePriorityCommandHandler : IRequestHandler<UpdatePrior
 
         var ticket = Domain.Ticket.Ticket.Load(request.TicketId, events);
 
-        ticket.UpdatePriority(request.Priority);
+        var priority = Enum.Parse<Priority>(request.Priority);
+
+        ticket.UpdatePriority(priority);
 
         await _ticketRepository.SaveEventsAsync(ticket.AggregateId, ticket.UncommittedEvents.ToList());
 
