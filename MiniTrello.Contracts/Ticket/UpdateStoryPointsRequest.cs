@@ -1,8 +1,7 @@
 ﻿namespace MiniTrello.Contracts.Ticket;
 
-public class UpdatePriorityRequest
+public class UpdateStoryPointsRequest
 {
     public Guid TicketId { get; set; }
-    
-    public string Priority { get; set; }
+    public int StoryPoints { get; set; }
 }

@@ -6,6 +6,7 @@ using MiniTrello.Application.Ticket.Commands.MoveToDone;
 using MiniTrello.Application.Ticket.Commands.MoveToInProgress;
 using MiniTrello.Application.Ticket.Commands.MoveToTest;
 using MiniTrello.Application.Ticket.Commands.UpdatePriority;
+using MiniTrello.Application.Ticket.Commands.UpdateStoryPoints;
 using MiniTrello.Contracts.Ticket;
 using MiniTrello.Domain.Exceptions;
 
@@ -62,6 +63,17 @@ namespace MiniTrello.Web.Controllers
             }
 
             await _mediator.Send(new UpdatePriorityCommand(request.TicketId, request.Priority));
+        }
+
+        [HttpPatch("{ticketId}/story-points")]
+        public async Task UpdateStoryPoints(Guid ticketId, [FromBody] UpdateStoryPointsRequest request)
+        {
+            if (ticketId != request.TicketId)
+            {
+                throw new MiniTrelloValidationException("Incompatible entity Ids");
+            }
+
+            await _mediator.Send(new UpdateStoryPointsCommand(request.TicketId, request.StoryPoints));
         }
     }
 }
