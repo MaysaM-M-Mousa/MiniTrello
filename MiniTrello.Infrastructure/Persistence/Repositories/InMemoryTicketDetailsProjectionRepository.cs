@@ -29,4 +29,9 @@ internal sealed class InMemoryTicketDetailsProjectionRepository : ITicketDetails
         _projections.Remove(dbProjection);
         _projections.Add(projection);
     }
+
+    public Task<List<TicketDetailsProjection>> GetAll()
+    {
+        return Task.FromResult(_projections);
+    }
 }

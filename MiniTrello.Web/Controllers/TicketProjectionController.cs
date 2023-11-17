@@ -1,6 +1,8 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Mvc;
+using MiniTrello.Application.TicketDetails.Queries.GetAll;
 using MiniTrello.Application.TicketDetails.Queries.GetById;
+using MiniTrello.Contracts.Common;
 using MiniTrello.Contracts.TicketDetailsProjection;
 
 namespace MiniTrello.Web.Controllers
@@ -15,6 +17,12 @@ namespace MiniTrello.Web.Controllers
         public TicketProjectionController(IMediator mediator)
         {
             _mediator = mediator;
+        }
+        
+        [HttpGet]
+        public async Task<ListResponse<TicketDetailsProjectionResponse>> GetTicketProjections()
+        {
+            return await _mediator.Send(new GetAllTicketProjectionsQuery());
         }
 
         [HttpGet("{ticketId}")]
