@@ -15,7 +15,7 @@ builder.Services.AddMiniTrelloApiVersioning();
 
 builder.Services
     .AddApplicationDependencies()
-    .AddInfrastructureDependencies();
+    .AddInfrastructureDependencies(builder.Configuration);
 
 var app = builder.Build();
 
