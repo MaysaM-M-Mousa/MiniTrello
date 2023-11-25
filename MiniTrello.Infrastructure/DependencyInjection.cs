@@ -14,7 +14,9 @@ public static class DependencyInjection
         services.AddSingleton<ITicketRepository, InMemoryTicketRepository>();
         services.AddSingleton<ITicketDetailsProjectionRepository, InMemoryTicketDetailsProjectionRepository>();
 
-        services.AddDbContext<MiniTrelloDbContext>(opts => opts.UseSqlServer(configuration.GetConnectionString("MiniTrelloSqlServer"), b => b.MigrationsAssembly("MiniTrello.Infrastructure")));
+        services.AddDbContext<MiniTrelloDbContext>(
+            opts => opts.UseSqlServer(configuration.GetConnectionString("MiniTrelloSqlServer"), 
+            b => b.MigrationsAssembly("MiniTrello.Infrastructure")));
 
         return services;
     }

@@ -9,7 +9,7 @@ namespace MiniTrello.Web.Controllers
 {
     [ApiController]
     [ApiVersion("1.0")]
-    [Route("api/v{version:apiVersion}/[controller]")]
+    [Route("api/v{version:apiVersion}/ticket-projections")]
     public class TicketProjectionController : ControllerBase
     {
         private readonly IMediator _mediator;
