@@ -88,6 +88,11 @@ public sealed class Ticket : AggregateRoot
             throw new MiniTrelloValidationException("Only Ticket in ToDo or Test lists can be moved to InProgress list!");
         }
 
+        if (string.IsNullOrEmpty(Assignee))
+        {
+            throw new MiniTrelloValidationException("You can not moved unassigned ticket to InProgress!");
+        }
+
         var @event = new TicketMovedToInProgressDomainEvent(AggregateId);
 
         AddUncommittedEvent(@event);
