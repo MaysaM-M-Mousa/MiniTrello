@@ -12,5 +12,5 @@ internal class MiniTrelloDbContext : DbContext
         modelBuilder.ApplyConfigurationsFromAssembly(typeof(MiniTrelloDbContext).Assembly);
     }
 
-    DbSet<Comment> Comment { get; set; } = null!;
+    public DbSet<Comment> Comment { get; set; } = null!;
 }
