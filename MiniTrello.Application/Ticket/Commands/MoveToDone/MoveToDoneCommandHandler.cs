@@ -1,5 +1,4 @@
 ﻿using MediatR;
-using MiniTrello.Application.Common.Interfaces;
 
 namespace MiniTrello.Application.Ticket.Commands.MoveToDone;
 

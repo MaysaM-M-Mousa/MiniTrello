@@ -1,7 +1,7 @@
 ﻿using MediatR;
-using MiniTrello.Application.Common.Interfaces;
 using MiniTrello.Contracts.Common;
 using MiniTrello.Contracts.TicketDetailsProjection;
+using MiniTrello.Domain.Ticket.Projections.TicketDetails;
 
 namespace MiniTrello.Application.TicketDetails.Queries.GetAll;
 

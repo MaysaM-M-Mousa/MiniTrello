@@ -1,7 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using MiniTrello.Application.Common.Interfaces;
+using MiniTrello.Domain.Ticket.Projections.TicketDetails;
 using MiniTrello.Infrastructure.Persistence;
 using MiniTrello.Infrastructure.Persistence.Repositories;
 

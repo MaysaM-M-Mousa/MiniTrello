@@ -1,5 +1,4 @@
-﻿using MiniTrello.Application.Common.Interfaces;
-using MiniTrello.Domain.Ticket.Projections.TicketDetails;
+﻿using MiniTrello.Domain.Ticket.Projections.TicketDetails;
 
 namespace MiniTrello.Infrastructure.Persistence.Repositories;
 

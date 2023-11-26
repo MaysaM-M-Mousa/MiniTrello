@@ -1,5 +1,4 @@
 ﻿using MediatR;
-using MiniTrello.Application.Common.Interfaces;
 using MiniTrello.Domain.Ticket;
 
 namespace MiniTrello.Application.Ticket.Commands.UpdatePriority;

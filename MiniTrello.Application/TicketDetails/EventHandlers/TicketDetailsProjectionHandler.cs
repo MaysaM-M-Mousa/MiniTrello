@@ -1,6 +1,6 @@
 ﻿using MediatR;
-using MiniTrello.Application.Common.Interfaces;
 using MiniTrello.Domain.Primitives;
+using MiniTrello.Domain.Ticket.Projections.TicketDetails;
 
 namespace MiniTrello.Application.TicketDetails.EventHandlers;
 
