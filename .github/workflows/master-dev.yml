@@ -1,0 +1,28 @@
+name: MiniTrello master-dev-build
+
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v3
+
+      - name: Set up .NET SDK
+        uses: actions/setup-dotnet@v3
+        with:
+          dotnet-version: '6.0.x'
+
+      - name: Restore Dependencies
+        run: dotnet restore ./MiniTrello.sln
+
+      - name: Build Application
+        run: dotnet build ./MiniTrello.sln --configuration Release --no-restore
+
+      - name: Run Tests
+        run: dotnet test ./MiniTrello.sln
