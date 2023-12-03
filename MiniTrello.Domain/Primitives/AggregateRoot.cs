@@ -12,7 +12,7 @@ public abstract class AggregateRoot
 
     public AggregateRoot(Guid aggregateId) => AggregateId = aggregateId;
 
-    public IReadOnlyList<IDomainEvent> UncommittedEvents => _uncommittedEvents.ToList();
+    public IReadOnlyList<IDomainEvent> UncommittedEvents => _uncommittedEvents.ToList().AsReadOnly();
 
     public void AddUncommittedEvent(IDomainEvent domainEvent) => _uncommittedEvents.Add(domainEvent);
 
