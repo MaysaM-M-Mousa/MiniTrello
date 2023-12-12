@@ -10,8 +10,6 @@ public sealed class Ticket : AggregateRoot
 
     public TicketStatus Status { get; private set; }
 
-    public bool IsCompleted { get; private set; }
-
     private Ticket() { }
 
     private Ticket(Guid aggregateId) : base(aggregateId)
