@@ -38,6 +38,11 @@ public sealed class Ticket : AggregateRoot
 
     public void Assign(string assignee)
     {
+        if (IsDeleted)
+        {
+            throw new MiniTrelloValidationException("Can't Perform actions on deleted ticket!");
+        }
+
         if (string.IsNullOrEmpty(assignee))
         {
             throw new NullReferenceException(nameof(assignee));
@@ -51,6 +56,11 @@ public sealed class Ticket : AggregateRoot
 
     public void Unassign()
     {
+        if (IsDeleted)
+        {
+            throw new MiniTrelloValidationException("Can't Perform actions on deleted ticket!");
+        }
+
         if (string.IsNullOrEmpty(Assignee))
         {
             throw new TicketAlreadyUnassignedException();
@@ -64,6 +74,11 @@ public sealed class Ticket : AggregateRoot
 
     public void UpdatePriority(Priority priority)
     {
+        if (IsDeleted)
+        {
+            throw new MiniTrelloValidationException("Can't Perform actions on deleted ticket!");
+        }
+
         var @event = new TicketPriorityUpdatedDomainEvent(AggregateId, priority);
 
         AddUncommittedEvent(@event);
@@ -71,6 +86,11 @@ public sealed class Ticket : AggregateRoot
 
     public void UpdateStoryPoints(int storyPoints)
     {
+        if (IsDeleted)
+        {
+            throw new MiniTrelloValidationException("Can't Perform actions on deleted ticket!");
+        }
+
         var @event = new TicketStoryPointsUpdatedDomainEvent(AggregateId, storyPoints);
 
         AddUncommittedEvent(@event);
@@ -78,6 +98,11 @@ public sealed class Ticket : AggregateRoot
 
     public void MoveToInProgress()
     {
+        if (IsDeleted)
+        {
+            throw new MiniTrelloValidationException("Can't Perform actions on deleted ticket!");
+        }
+
         if (Status == TicketStatus.InProgress)
         {
             return;
@@ -101,6 +126,11 @@ public sealed class Ticket : AggregateRoot
 
     public void MoveToCodeReview()
     {
+        if (IsDeleted)
+        {
+            throw new MiniTrelloValidationException("Can't Perform actions on deleted ticket!");
+        }
+
         if (Status == TicketStatus.CodeReview)
         {
             return;
@@ -119,6 +149,11 @@ public sealed class Ticket : AggregateRoot
 
     public void MoveToTest()
     {
+        if (IsDeleted)
+        {
+            throw new MiniTrelloValidationException("Can't Perform actions on deleted ticket!");
+        }
+
         if (Status == TicketStatus.Test)
         {
             return;
@@ -137,6 +172,11 @@ public sealed class Ticket : AggregateRoot
 
     public void MoveToDone()
     {
+        if (IsDeleted)
+        {
+            throw new MiniTrelloValidationException("Can't Perform actions on deleted ticket!");
+        }
+
         if (Status == TicketStatus.Done)
         {
             return;
