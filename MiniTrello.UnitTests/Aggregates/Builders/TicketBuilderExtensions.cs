@@ -60,4 +60,12 @@ public static class TicketBuilderExtensions
             .AddMovedToDoneEvent()
             .Build();
     }
+
+    public static Ticket BuildDeletedTicket(this TicketBuilder ticketBuilder)
+    {
+        return ticketBuilder
+            .AddCreatedEvent()
+            .AddDeletedEvent()
+            .Build();
+    }
 }

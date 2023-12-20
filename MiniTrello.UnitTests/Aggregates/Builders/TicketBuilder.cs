@@ -51,6 +51,12 @@ public class TicketBuilder
         return this;
     }
 
+    public TicketBuilder AddDeletedEvent()
+    {
+        _events.Add(new TicketDeletedDomainEvent(_ticketId));
+        return this;
+    }
+
     public Ticket Build()
     {
         var ticket = Ticket.Load(_ticketId, _events);
