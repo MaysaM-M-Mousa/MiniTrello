@@ -1,4 +1,5 @@
 ﻿using FluentAssertions;
+using MiniTrello.Domain.Exceptions;
 using MiniTrello.Domain.Ticket;
 using MiniTrello.Domain.Ticket.DomainEvents;
 using MiniTrello.UnitTests.Aggregates.Builders;
@@ -16,5 +17,17 @@ public class Ticket_UpdatePriority
 
         ticket.UncommittedEvents.Count.Should().Be(1);
         ticket.UncommittedEvents.Single().Should().BeOfType(typeof(TicketPriorityUpdatedDomainEvent));
-    } 
+    }
+
+    [Fact]
+    public void UpdatingDeletedTicketPriority_Fails()
+    {
+        var ticket = new TicketBuilder().BuildDeletedTicket();
+
+        var act = () => ticket.UpdatePriority(Priority.Hotfix);
+
+        act.Should()
+            .Throw<MiniTrelloValidationException>()
+            .WithMessage("Can't Perform actions on deleted ticket!");
+    }
 }

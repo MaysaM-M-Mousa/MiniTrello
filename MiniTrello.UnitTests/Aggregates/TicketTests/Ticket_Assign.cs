@@ -1,4 +1,5 @@
 ﻿using FluentAssertions;
+using MiniTrello.Domain.Exceptions;
 using MiniTrello.Domain.Ticket.DomainEvents;
 using MiniTrello.UnitTests.Aggregates.Builders;
 
@@ -22,7 +23,6 @@ public class Ticket_Assign
     public void AssigneTicketTo_ValidUser_Succeeds()
     {
         var ticket = new TicketBuilder().BuildUnassignedTicket();
-
         var user = "Maysam";
 
         ticket.Assign(user);
@@ -30,5 +30,18 @@ public class Ticket_Assign
         ticket.Assignee.Should().Be(user);
         ticket.UncommittedEvents.Count.Should().Be(1);
         ticket.UncommittedEvents.Single().Should().BeOfType(typeof(TicketAssignedDomainEvent));
+    }
+
+    [Fact]
+    public void AssigneTicketTo_DeletedTicket_Fails()
+    {
+        var ticket = new TicketBuilder().BuildDeletedTicket();
+        var user = "Maysam";
+        
+        var act = () => ticket.Assign(user);
+
+        act.Should()
+            .Throw<MiniTrelloValidationException>()
+            .WithMessage("Can't Perform actions on deleted ticket!");
     }
 }

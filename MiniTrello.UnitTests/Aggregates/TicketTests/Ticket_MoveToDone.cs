@@ -42,4 +42,16 @@ public class Ticket_MoveToDone
             .Throw<MiniTrelloValidationException>()
             .WithMessage("Only Test tickets can be moved to Done!");
     }
+
+    [Fact]
+    public void MovingDeletedTicket_To_Done_DoesNothing()
+    {
+        var ticket = new TicketBuilder().BuildDeletedTicket();
+
+        var act = () => ticket.MoveToDone();
+
+        act.Should()
+            .Throw<MiniTrelloValidationException>()
+            .WithMessage("Can't Perform actions on deleted ticket!");
+    }
 }

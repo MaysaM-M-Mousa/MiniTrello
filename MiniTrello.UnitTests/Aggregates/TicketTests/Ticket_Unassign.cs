@@ -30,4 +30,16 @@ public class Ticket_Unassign
         ticket.UncommittedEvents.Count.Should().Be(1);
         ticket.UncommittedEvents.Single().Should().BeOfType(typeof(TicketUnassignedDomainEvent));
     }
+
+    [Fact]
+    public void UnassignDeletedTicket_Fails()
+    {
+        var ticket = new TicketBuilder().BuildDeletedTicket();
+
+        var act = () => ticket.Unassign();
+
+        act.Should()
+            .Throw<MiniTrelloValidationException>()
+            .WithMessage("Can't Perform actions on deleted ticket!");
+    }
 }

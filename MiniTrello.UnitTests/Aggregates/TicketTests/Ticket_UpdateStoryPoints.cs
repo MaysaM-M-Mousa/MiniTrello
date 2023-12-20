@@ -1,4 +1,5 @@
 ﻿using FluentAssertions;
+using MiniTrello.Domain.Exceptions;
 using MiniTrello.Domain.Ticket.DomainEvents;
 using MiniTrello.UnitTests.Aggregates.Builders;
 
@@ -15,5 +16,17 @@ public class Ticket_UpdateStoryPoints
 
         ticket.UncommittedEvents.Count.Should().Be(1);
         ticket.UncommittedEvents.Single().Should().BeOfType(typeof(TicketStoryPointsUpdatedDomainEvent));
+    }
+
+    [Fact]
+    public void UpdatingDeletedTicketStoryPoints_Fails()
+    {
+        var ticket = new TicketBuilder().BuildDeletedTicket();
+
+        var act = () => ticket.UpdateStoryPoints(5);
+
+        act.Should()
+            .Throw<MiniTrelloValidationException>()
+            .WithMessage("Can't Perform actions on deleted ticket!");
     }
 }

@@ -32,7 +32,7 @@ public class Ticket_MoveToTest
     }
 
     [Fact]
-    public void MovingFrom_ToDo_ToT_est_Fails()
+    public void MovingFrom_ToDo_To_Test_Fails()
     {
         var ticket = new TicketBuilder().BuildAssignedTicket();
 
@@ -41,5 +41,17 @@ public class Ticket_MoveToTest
         act.Should()
             .Throw<MiniTrelloValidationException>()
             .WithMessage("Only CodeReview tickets can be moved to Test!");
+    }
+
+    [Fact]
+    public void MovingDeletedTicket_To_Test_Fails()
+    {
+        var ticket = new TicketBuilder().BuildDeletedTicket();
+
+        var act = () => ticket.MoveToTest();
+
+        act.Should()
+            .Throw<MiniTrelloValidationException>()
+            .WithMessage("Can't Perform actions on deleted ticket!");
     }
 }

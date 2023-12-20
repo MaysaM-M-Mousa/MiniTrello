@@ -79,4 +79,16 @@ public class Ticket_MoveToInProgress
             .Throw<MiniTrelloValidationException>()
             .WithMessage("You can not moved unassigned ticket to InProgress!");
     }
+
+    [Fact]
+    public void MovingDeleteTicket_To_InProgress_Fails()
+    {
+        var ticket = new TicketBuilder().BuildDeletedTicket();
+
+        var act = () => ticket.MoveToInProgress();
+
+        act.Should()
+            .Throw<MiniTrelloValidationException>()
+            .WithMessage("Can't Perform actions on deleted ticket!");
+    }
 }

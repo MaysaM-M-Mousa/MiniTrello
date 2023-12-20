@@ -42,4 +42,16 @@ public class Ticket_MoveToCodeReview
             .Throw<MiniTrelloValidationException>()
             .WithMessage("Only InProgress tickets can be moved to CodeReview!");
     }
+
+    [Fact]
+    public void MovingDeletedTicketTo_CodeReview_Succeeds()
+    {
+        var ticket = new TicketBuilder().BuildDeletedTicket();
+
+        var act = () => ticket.MoveToCodeReview();
+
+        act.Should()
+            .Throw<MiniTrelloValidationException>()
+            .WithMessage("Can't Perform actions on deleted ticket!");
+    }
 }
