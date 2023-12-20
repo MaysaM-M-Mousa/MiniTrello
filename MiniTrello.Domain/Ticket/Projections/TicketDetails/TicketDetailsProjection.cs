@@ -17,9 +17,13 @@ public class TicketDetailsProjection : IProjection
 
     public bool IsCompleted { get; set; }
 
+    public bool IsDeleted { get; set; }
+
     public DateTime? StartedOnUtc { get; set; }
 
     public DateTime? CompletedOnUtc { get; set; }
+
+    public DateTime? DeletedOnUtc { get; set; }
 
     public void When(IDomainEvent @event)
     {
@@ -51,6 +55,9 @@ public class TicketDetailsProjection : IProjection
                 break;
             case TicketMovedToDoneDomainEvent:
                 Apply((TicketMovedToDoneDomainEvent)@event);
+                break;
+            case TicketDeletedDomainEvent:
+                Apply((TicketDeletedDomainEvent)@event);
                 break;
             default:
                 throw new Exception($"Unsupported Event type {@event.GetType().Name}");
@@ -107,5 +114,11 @@ public class TicketDetailsProjection : IProjection
         Status = TicketStatus.Done;
         IsCompleted = true;
         CompletedOnUtc = @event.OccurredAt;
+    }
+
+    private void Apply(TicketDeletedDomainEvent @event)
+    {
+        IsDeleted = true;
+        DeletedOnUtc = @event.OccurredAt;
     }
 }

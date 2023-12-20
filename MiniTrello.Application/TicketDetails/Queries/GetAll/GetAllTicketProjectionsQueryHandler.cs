@@ -27,8 +27,10 @@ internal sealed class GetAllTicketProjectionsQueryHandler : IRequestHandler<GetA
                 StoryPoints = p.StoryPoints,
                 Status = p.Status.ToString(),
                 IsCompleted = p.IsCompleted,
+                IsDeleted = p.IsDeleted,
                 StartedOnUtc = p.StartedOnUtc,
                 CompletedOnUtc = p.CompletedOnUtc,
+                DeletedOnUtc = p.DeletedOnUtc,
             })
             .ToList();
 

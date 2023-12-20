@@ -25,8 +25,10 @@ internal sealed class GetByIdQueryHandler : IRequestHandler<GetByIdQuery, Ticket
             StoryPoints = tickerProjection.StoryPoints,
             Status = tickerProjection.Status.ToString(),
             IsCompleted = tickerProjection.IsCompleted,
+            IsDeleted= tickerProjection.IsDeleted,
             StartedOnUtc = tickerProjection.StartedOnUtc,
             CompletedOnUtc = tickerProjection.CompletedOnUtc,
+            DeletedOnUtc = tickerProjection.DeletedOnUtc
         };
     }
 }

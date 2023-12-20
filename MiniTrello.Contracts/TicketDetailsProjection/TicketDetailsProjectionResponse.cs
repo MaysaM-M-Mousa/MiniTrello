@@ -14,7 +14,11 @@ public class TicketDetailsProjectionResponse
 
     public bool IsCompleted { get; set; }
 
+    public bool IsDeleted { get; set; }
+
     public DateTime? StartedOnUtc { get; set; }
 
     public DateTime? CompletedOnUtc { get; set; }
+
+    public DateTime? DeletedOnUtc { get; set; }
 }

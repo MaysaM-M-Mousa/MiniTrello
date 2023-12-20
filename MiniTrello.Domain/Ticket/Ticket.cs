@@ -10,6 +10,8 @@ public sealed class Ticket : AggregateRoot
 
     public TicketStatus Status { get; private set; }
 
+    public bool IsDeleted { get; private set; }
+
     private Ticket() { }
 
     private Ticket(Guid aggregateId) : base(aggregateId)
@@ -151,6 +153,19 @@ public sealed class Ticket : AggregateRoot
         Apply(@event);
     }
 
+    public void Delete()
+    {
+        if (IsDeleted)
+        {
+            throw new MiniTrelloValidationException("This ticket already deleted!");
+        }
+
+        var @event = new TicketDeletedDomainEvent(this.AggregateId);
+
+        AddUncommittedEvent(@event);
+        Apply(@event);
+    }
+
     public static Ticket Load(Guid aggregateId, List<IDomainEvent> events)
     {
         var ticket = new Ticket(aggregateId);
@@ -187,6 +202,9 @@ public sealed class Ticket : AggregateRoot
                 break;
             case TicketMovedToDoneDomainEvent:
                 Apply((TicketMovedToDoneDomainEvent)@event);
+                break;
+            case TicketDeletedDomainEvent:
+                Apply((TicketDeletedDomainEvent)@event);
                 break;
             case TicketPriorityUpdatedDomainEvent:
             case TicketStoryPointsUpdatedDomainEvent:
@@ -230,5 +248,10 @@ public sealed class Ticket : AggregateRoot
     private void Apply(TicketMovedToDoneDomainEvent @event)
     {
         Status = TicketStatus.Done;
+    }
+
+    private void Apply(TicketDeletedDomainEvent @event)
+    {
+        IsDeleted = true;
     }
 }
