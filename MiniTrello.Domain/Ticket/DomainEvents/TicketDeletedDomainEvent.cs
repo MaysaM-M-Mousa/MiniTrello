@@ -2,8 +2,7 @@
 
 namespace MiniTrello.Domain.Ticket.DomainEvents;
 
-public record TicketDeletedDomainEvent(
-    Guid AggregateId) : IDomainEvent
+public sealed record TicketDeletedDomainEvent(Guid AggregateId) : IDomainEvent
 {
     public Guid Id { get; set; } = Guid.NewGuid();
 
