@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using MiniTrello.Application.Ticket.Commands.Assign;
 using MiniTrello.Application.Ticket.Commands.Create;
+using MiniTrello.Application.Ticket.Commands.Delete;
 using MiniTrello.Application.Ticket.Commands.MoveToCodeReview;
 using MiniTrello.Application.Ticket.Commands.MoveToDone;
 using MiniTrello.Application.Ticket.Commands.MoveToInProgress;
@@ -93,6 +94,12 @@ namespace MiniTrello.Web.Controllers
         public async Task UnassgineTicket(Guid ticketId)
         {
             await _mediator.Send(new UnassignCommand(ticketId));
+        }
+
+        [HttpDelete("{ticketId}")]
+        public async Task DeleteTicket(Guid ticketId)
+        {
+            await _mediator.Send(new DeleteCommand(ticketId));
         }
     }
 }
