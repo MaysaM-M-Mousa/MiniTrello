@@ -2,7 +2,7 @@
 
 namespace MiniTrello.Application.Ticket.Commands.Delete;
 
-public sealed class DeleteCommandHandler : IRequestHandler<DeleteCommand>
+internal sealed class DeleteCommandHandler : IRequestHandler<DeleteCommand>
 {
     private readonly ITicketRepository _ticketRepository;
     private readonly IMediator _mediator;
