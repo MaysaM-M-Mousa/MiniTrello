@@ -11,7 +11,6 @@ using MiniTrello.Application.Ticket.Commands.Unassign;
 using MiniTrello.Application.Ticket.Commands.UpdatePriority;
 using MiniTrello.Application.Ticket.Commands.UpdateStoryPoints;
 using MiniTrello.Contracts.Ticket;
-using MiniTrello.Domain.Exceptions;
 
 namespace MiniTrello.Web.Controllers
 {
@@ -60,34 +59,19 @@ namespace MiniTrello.Web.Controllers
         [HttpPut("{ticketId}/priority")]
         public async Task UpdatePriority(Guid ticketId, [FromBody] UpdatePriorityRequest request)
         {
-            if (ticketId != request.TicketId)
-            {
-                throw new MiniTrelloValidationException("Incompatible entity Ids");
-            }
-
-            await _mediator.Send(new UpdatePriorityCommand(request.TicketId, request.Priority));
+            await _mediator.Send(new UpdatePriorityCommand(ticketId, request.Priority));
         }
 
         [HttpPut("{ticketId}/story-points")]
         public async Task UpdateStoryPoints(Guid ticketId, [FromBody] UpdateStoryPointsRequest request)
         {
-            if (ticketId != request.TicketId)
-            {
-                throw new MiniTrelloValidationException("Incompatible entity Ids");
-            }
-
-            await _mediator.Send(new UpdateStoryPointsCommand(request.TicketId, request.StoryPoints));
+            await _mediator.Send(new UpdateStoryPointsCommand(ticketId, request.StoryPoints));
         }
 
         [HttpPut("{ticketId}/assignee")]
         public async Task UpdateAssignee(Guid ticketId, [FromBody] UpdateAssigneeRequest request)
         {
-            if (ticketId != request.TicketId)
-            {
-                throw new MiniTrelloValidationException("Incompatible entity Ids");
-            }
-
-            await _mediator.Send(new AssignCommand(request.TicketId, request.User));
+            await _mediator.Send(new AssignCommand(ticketId, request.User));
         }
 
         [HttpPost("{ticketId}/unassign")]

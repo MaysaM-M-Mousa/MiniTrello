@@ -2,6 +2,5 @@
 
 public class UpdateStoryPointsRequest
 {
-    public Guid TicketId { get; set; }
     public int StoryPoints { get; set; }
 }
