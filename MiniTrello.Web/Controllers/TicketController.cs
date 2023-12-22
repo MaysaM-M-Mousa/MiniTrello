@@ -76,7 +76,7 @@ namespace MiniTrello.Web.Controllers
 
             return res.Match<IActionResult>(
                 onSuccess: () => Ok(),
-                OnFailure: (e) => BadRequest(e));
+                onFailure: (e) => BadRequest(e));
         }
 
         [HttpPost("{ticketId}/unassign")]
