@@ -11,6 +11,7 @@ using MiniTrello.Application.Ticket.Commands.Unassign;
 using MiniTrello.Application.Ticket.Commands.UpdatePriority;
 using MiniTrello.Application.Ticket.Commands.UpdateStoryPoints;
 using MiniTrello.Contracts.Ticket;
+using MiniTrello.Domain.Primitives.Result;
 
 namespace MiniTrello.Web.Controllers
 {
@@ -69,9 +70,13 @@ namespace MiniTrello.Web.Controllers
         }
 
         [HttpPut("{ticketId}/assignee")]
-        public async Task UpdateAssignee(Guid ticketId, [FromBody] UpdateAssigneeRequest request)
+        public async Task<IActionResult> UpdateAssignee(Guid ticketId, [FromBody] UpdateAssigneeRequest request)
         {
-            await _mediator.Send(new AssignCommand(ticketId, request.User));
+            var res = await _mediator.Send(new AssignCommand(ticketId, request.User));
+
+            return res.Match<IActionResult>(
+                onSuccess: () => Ok(),
+                OnFailure: (e) => BadRequest(e));
         }
 
         [HttpPost("{ticketId}/unassign")]

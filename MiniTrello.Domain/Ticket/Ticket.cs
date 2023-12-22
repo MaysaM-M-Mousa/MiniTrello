@@ -1,5 +1,6 @@
 ﻿using MiniTrello.Domain.Exceptions;
 using MiniTrello.Domain.Primitives;
+using MiniTrello.Domain.Primitives.Result;
 using MiniTrello.Domain.Ticket.DomainEvents;
 
 namespace MiniTrello.Domain.Ticket;
@@ -14,9 +15,7 @@ public sealed class Ticket : AggregateRoot
 
     private Ticket() { }
 
-    private Ticket(Guid aggregateId) : base(aggregateId)
-    {
-    }
+    private Ticket(Guid aggregateId) : base(aggregateId) { }
 
     private Ticket(Guid aggregateId, string assignee, TicketStatus status) : base(aggregateId)
     {
@@ -36,22 +35,24 @@ public sealed class Ticket : AggregateRoot
         return ticket;
     }
 
-    public void Assign(string assignee)
+    public Result Assign(string assignee)
     {
         if (IsDeleted)
         {
-            throw new MiniTrelloValidationException("Can't Perform actions on deleted ticket!");
+            return TicketErrors.DeletedTicket();
         }
 
         if (string.IsNullOrEmpty(assignee))
         {
-            throw new NullReferenceException(nameof(assignee));
+            return TicketErrors.InvalidAssigneeName();
         }
 
         var @event = new TicketAssignedDomainEvent(AggregateId, assignee);
 
         AddUncommittedEvent(@event);
         Apply(@event);
+
+        return Result.Success();
     }
 
     public void Unassign()
