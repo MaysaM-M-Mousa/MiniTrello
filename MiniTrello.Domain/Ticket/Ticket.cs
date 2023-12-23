@@ -75,28 +75,32 @@ public sealed class Ticket : AggregateRoot
         return Result.Success();
     }
 
-    public void UpdatePriority(Priority priority)
+    public Result UpdatePriority(Priority priority)
     {
         if (IsDeleted)
         {
-            throw new MiniTrelloValidationException("Can't Perform actions on deleted ticket!");
+            return TicketErrors.DeletedTicket();
         }
 
         var @event = new TicketPriorityUpdatedDomainEvent(AggregateId, priority);
 
         AddUncommittedEvent(@event);
+
+        return Result.Success();
     }
 
-    public void UpdateStoryPoints(int storyPoints)
+    public Result UpdateStoryPoints(int storyPoints)
     {
         if (IsDeleted)
         {
-            throw new MiniTrelloValidationException("Can't Perform actions on deleted ticket!");
+            return TicketErrors.DeletedTicket();
         }
 
         var @event = new TicketStoryPointsUpdatedDomainEvent(AggregateId, storyPoints);
 
         AddUncommittedEvent(@event);
+
+        return Result.Success();
     }
 
     public void MoveToInProgress()

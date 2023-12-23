@@ -12,7 +12,6 @@ using MiniTrello.Application.Ticket.Commands.UpdatePriority;
 using MiniTrello.Application.Ticket.Commands.UpdateStoryPoints;
 using MiniTrello.Contracts.Ticket;
 using MiniTrello.Domain.Primitives.Result;
-using MiniTrello.Domain.Ticket;
 
 namespace MiniTrello.Web.Controllers
 {
@@ -63,15 +62,23 @@ namespace MiniTrello.Web.Controllers
         }
 
         [HttpPut("{ticketId}/priority")]
-        public async Task UpdatePriority(Guid ticketId, [FromBody] UpdatePriorityRequest request)
+        public async Task<IActionResult> UpdatePriority(Guid ticketId, [FromBody] UpdatePriorityRequest request)
         {
-            await _mediator.Send(new UpdatePriorityCommand(ticketId, request.Priority));
+            var res = await _mediator.Send(new UpdatePriorityCommand(ticketId, request.Priority));
+
+            return res.Match<IActionResult>(
+                onSuccess: () => Ok(),
+                onFailure: (e) => BadRequest(e));
         }
 
         [HttpPut("{ticketId}/story-points")]
-        public async Task UpdateStoryPoints(Guid ticketId, [FromBody] UpdateStoryPointsRequest request)
+        public async Task<IActionResult> UpdateStoryPoints(Guid ticketId, [FromBody] UpdateStoryPointsRequest request)
         {
-            await _mediator.Send(new UpdateStoryPointsCommand(ticketId, request.StoryPoints));
+            var res = await _mediator.Send(new UpdateStoryPointsCommand(ticketId, request.StoryPoints));
+
+            return res.Match<IActionResult>(
+                onSuccess: () => Ok(),
+                onFailure: (e) => BadRequest(e));
         }
 
         [HttpPut("{ticketId}/assignee")]

@@ -1,5 +1,4 @@
 ﻿using FluentAssertions;
-using MiniTrello.Domain.Exceptions;
 using MiniTrello.Domain.Ticket;
 using MiniTrello.Domain.Ticket.DomainEvents;
 using MiniTrello.UnitTests.Aggregates.Builders;
@@ -13,8 +12,9 @@ public class Ticket_UpdatePriority
     {
         var ticket = new TicketBuilder().BuildUnassignedTicket();
 
-        ticket.UpdatePriority(Priority.Hotfix);
+        var result = ticket.UpdatePriority(Priority.Hotfix);
 
+        result.IsSuccess.Should().BeTrue();
         ticket.UncommittedEvents.Count.Should().Be(1);
         ticket.UncommittedEvents.Single().Should().BeOfType(typeof(TicketPriorityUpdatedDomainEvent));
     }
@@ -24,10 +24,10 @@ public class Ticket_UpdatePriority
     {
         var ticket = new TicketBuilder().BuildDeletedTicket();
 
-        var act = () => ticket.UpdatePriority(Priority.Hotfix);
+        var result = ticket.UpdatePriority(Priority.Hotfix);
 
-        act.Should()
-            .Throw<MiniTrelloValidationException>()
-            .WithMessage("Can't Perform actions on deleted ticket!");
+        result.IsFailure.Should().BeTrue();
+        result.Error.Should().NotBeNull();
+        result.Error.Code.Should().Be("MiniTrello.Ticket.DeletedTicket");
     }
 }

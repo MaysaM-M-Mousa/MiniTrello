@@ -1,5 +1,4 @@
 ﻿using FluentAssertions;
-using MiniTrello.Domain.Exceptions;
 using MiniTrello.Domain.Ticket.DomainEvents;
 using MiniTrello.UnitTests.Aggregates.Builders;
 

@@ -1,8 +1,9 @@
 ﻿using MediatR;
+using MiniTrello.Domain.Primitives.Result;
 
 namespace MiniTrello.Application.Ticket.Commands.UpdateStoryPoints;
 
-internal sealed class UpdateStoryPointsCommandHandler : IRequestHandler<UpdateStoryPointsCommand>
+internal sealed class UpdateStoryPointsCommandHandler : IRequestHandler<UpdateStoryPointsCommand, Result>
 {
     private readonly ITicketRepository _ticketRepository;
     private readonly IMediator _mediator;
@@ -13,13 +14,18 @@ internal sealed class UpdateStoryPointsCommandHandler : IRequestHandler<UpdateSt
         _mediator = mediator;
     }
 
-    public async Task Handle(UpdateStoryPointsCommand request, CancellationToken cancellationToken)
+    public async Task<Result> Handle(UpdateStoryPointsCommand request, CancellationToken cancellationToken)
     {
         var events = await _ticketRepository.GetEventsAsync(request.TicketId);
 
         var ticket = Domain.Ticket.Ticket.Load(request.TicketId, events);
 
-        ticket.UpdateStoryPoints(request.StoryPoints);
+        var result = ticket.UpdateStoryPoints(request.StoryPoints);
+
+        if (result.IsFailure)
+        {
+            return result;
+        }
 
         await _ticketRepository.SaveEventsAsync(ticket.AggregateId, ticket.UncommittedEvents.ToList());
 
@@ -29,5 +35,7 @@ internal sealed class UpdateStoryPointsCommandHandler : IRequestHandler<UpdateSt
         }
 
         ticket.ClearUncommittedEvents();
+
+        return result;
     }
 }
