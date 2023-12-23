@@ -2,7 +2,7 @@
 using MiniTrello.Domain.Ticket.DomainEvents;
 using MiniTrello.Domain.Ticket;
 using MiniTrello.UnitTests.Aggregates.Builders;
-using MiniTrello.Domain.Exceptions;
+
 
 namespace MiniTrello.UnitTests.Aggregates.TicketTests;
 
@@ -13,45 +13,47 @@ public class Ticket_MoveToDone
     {
         var ticket = new TicketBuilder().BuildTestStatusTicket();
 
-        ticket.MoveToDone();
+        var result = ticket.MoveToDone();
 
+        result.IsSuccess.Should().BeTrue();
         ticket.Status.Should().Be(TicketStatus.Done);
         ticket.UncommittedEvents.Count.Should().Be(1);
         ticket.UncommittedEvents.Single().Should().BeOfType(typeof(TicketMovedToDoneDomainEvent));
     }
 
     [Fact]
-    public void MovingFrom_Done_ToDone_DoesNothing()
+    public void MovingFrom_Done_ToDone_Fails()
     {
         var ticket = new TicketBuilder().BuildDoneStatusTicket();
 
-        ticket.MoveToDone();
+        var result = ticket.MoveToDone();
 
+        result.IsFailure.Should().BeTrue();
         ticket.Status.Should().Be(TicketStatus.Done);
         ticket.UncommittedEvents.Should().BeEmpty();
     }
 
     [Fact]
-    public void MovingFrom_CodeReview_To_Done_DoesNothing()
+    public void MovingFrom_CodeReview_To_Done_Fails()
     {
         var ticket = new TicketBuilder().BuildCodeReviewStatusTicket();
+        
+        var result = ticket.MoveToDone();
 
-        var act = () => ticket.MoveToDone();
-
-        act.Should()
-            .Throw<MiniTrelloValidationException>()
-            .WithMessage("Only Test tickets can be moved to Done!");
+        result.IsFailure.Should().BeTrue();
+        result.Error.Should().NotBeNull();
+        result.Error.Code.Should().Be("MiniTrello.Ticket.InvalidOperation");
     }
 
     [Fact]
-    public void MovingDeletedTicket_To_Done_DoesNothing()
+    public void MovingDeletedTicket_To_Done_Fails()
     {
         var ticket = new TicketBuilder().BuildDeletedTicket();
 
-        var act = () => ticket.MoveToDone();
+        var result = ticket.MoveToDone();
 
-        act.Should()
-            .Throw<MiniTrelloValidationException>()
-            .WithMessage("Can't Perform actions on deleted ticket!");
+        result.IsFailure.Should().BeTrue();
+        result.Error.Should().NotBeNull();
+        result.Error.Code.Should().Be("MiniTrello.Ticket.DeletedTicket");
     }
 }

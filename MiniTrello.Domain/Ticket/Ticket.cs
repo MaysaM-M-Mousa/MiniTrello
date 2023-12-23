@@ -103,101 +103,109 @@ public sealed class Ticket : AggregateRoot
         return Result.Success();
     }
 
-    public void MoveToInProgress()
+    public Result MoveToInProgress()
     {
         if (IsDeleted)
         {
-            throw new MiniTrelloValidationException("Can't Perform actions on deleted ticket!");
+            return TicketErrors.DeletedTicket();
         }
 
         if (Status == TicketStatus.InProgress)
         {
-            return;
+            return TicketErrors.AlreadyInProgress();
         }
 
         if (Status == TicketStatus.CodeReview || Status == TicketStatus.Done)
         {
-            throw new MiniTrelloValidationException("Only Ticket in ToDo or Test lists can be moved to InProgress list!");
+            return TicketErrors.InvalidTicketOperation("Only Ticket in ToDo or Test lists can be moved to InProgress list!"); 
         }
 
         if (string.IsNullOrEmpty(Assignee))
         {
-            throw new MiniTrelloValidationException("You can not moved unassigned ticket to InProgress!");
+            return TicketErrors.UnassignedTicket("Can't move unassigned ticket to InProgress!");
         }
 
         var @event = new TicketMovedToInProgressDomainEvent(AggregateId);
 
         AddUncommittedEvent(@event);
         Apply(@event);
+
+        return Result.Success();
     }
 
-    public void MoveToCodeReview()
+    public Result MoveToCodeReview()
     {
         if (IsDeleted)
         {
-            throw new MiniTrelloValidationException("Can't Perform actions on deleted ticket!");
+            return TicketErrors.DeletedTicket();
         }
 
         if (Status == TicketStatus.CodeReview)
         {
-            return;
+            return TicketErrors.AlreadyInCodeReview();
         }
 
         if (Status != TicketStatus.InProgress)
         {
-            throw new MiniTrelloValidationException("Only InProgress tickets can be moved to CodeReview!");
+            return TicketErrors.InvalidTicketOperation("Only tickets in progress can be moved to code review!");
         }
 
         var @event = new TicketMovedToCodeReviewDomainEvent(AggregateId);
 
         AddUncommittedEvent(@event);
         Apply(@event);
+
+        return Result.Success();
     }
 
-    public void MoveToTest()
+    public Result MoveToTest()
     {
         if (IsDeleted)
         {
-            throw new MiniTrelloValidationException("Can't Perform actions on deleted ticket!");
+            return TicketErrors.DeletedTicket();
         }
 
         if (Status == TicketStatus.Test)
         {
-            return;
+            return TicketErrors.AlreadyInTest();
         }
 
         if (Status != TicketStatus.CodeReview)
         {
-            throw new MiniTrelloValidationException("Only CodeReview tickets can be moved to Test!");
+            return TicketErrors.InvalidTicketOperation("Only CodeReview tickets can be moved to Test!");
         }
 
         var @event = new TicketMovedToTestDomainEvent(AggregateId);
 
         AddUncommittedEvent(@event);
         Apply(@event);
+
+        return Result.Success();
     }
 
-    public void MoveToDone()
+    public Result MoveToDone()
     {
         if (IsDeleted)
         {
-            throw new MiniTrelloValidationException("Can't Perform actions on deleted ticket!");
+            return TicketErrors.DeletedTicket();
         }
 
         if (Status == TicketStatus.Done)
         {
-            return;
+            return TicketErrors.AlreadyInDone();
         }
 
         if (Status != TicketStatus.Test)
         {
-            throw new MiniTrelloValidationException("Only Test tickets can be moved to Done!");
+            return TicketErrors.InvalidTicketOperation("Only Test tickets can be moved to Done!");
         }
 
         var @event = new TicketMovedToDoneDomainEvent(AggregateId);
 
         AddUncommittedEvent(@event);
         Apply(@event);
+
+        return Result.Success();
     }
 
     public Result Delete()

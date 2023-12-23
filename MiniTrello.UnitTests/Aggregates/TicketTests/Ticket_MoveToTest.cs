@@ -1,5 +1,4 @@
 ﻿using FluentAssertions;
-using MiniTrello.Domain.Exceptions;
 using MiniTrello.Domain.Ticket;
 using MiniTrello.Domain.Ticket.DomainEvents;
 using MiniTrello.UnitTests.Aggregates.Builders;
@@ -13,20 +12,22 @@ public class Ticket_MoveToTest
     {
         var ticket = new TicketBuilder().BuildCodeReviewStatusTicket();
 
-        ticket.MoveToTest();
+        var result = ticket.MoveToTest();
 
+        result.IsSuccess.Should().BeTrue();
         ticket.Status.Should().Be(TicketStatus.Test);
         ticket.UncommittedEvents.Count.Should().Be(1);
         ticket.UncommittedEvents.Single().Should().BeOfType(typeof(TicketMovedToTestDomainEvent));
     }
 
     [Fact]
-    public void MovingFrom_Test_To_Test_DoesNothing()
+    public void MovingFrom_Test_To_Test_Fails()
     {
         var ticket = new TicketBuilder().BuildTestStatusTicket();
 
-        ticket.MoveToTest();
+        var result = ticket.MoveToTest();
 
+        result.IsFailure.Should().BeTrue();
         ticket.Status.Should().Be(TicketStatus.Test);
         ticket.UncommittedEvents.Should().BeEmpty();
     }
@@ -36,11 +37,11 @@ public class Ticket_MoveToTest
     {
         var ticket = new TicketBuilder().BuildAssignedTicket();
 
-        var act = () => ticket.MoveToTest();
+        var result = ticket.MoveToTest();
 
-        act.Should()
-            .Throw<MiniTrelloValidationException>()
-            .WithMessage("Only CodeReview tickets can be moved to Test!");
+        result.IsFailure.Should().BeTrue();
+        result.Error.Should().NotBeNull();
+        result.Error.Code.Should().Be("MiniTrello.Ticket.InvalidOperation");
     }
 
     [Fact]
@@ -48,10 +49,10 @@ public class Ticket_MoveToTest
     {
         var ticket = new TicketBuilder().BuildDeletedTicket();
 
-        var act = () => ticket.MoveToTest();
+        var result = ticket.MoveToTest();
 
-        act.Should()
-            .Throw<MiniTrelloValidationException>()
-            .WithMessage("Can't Perform actions on deleted ticket!");
+        result.IsFailure.Should().BeTrue();
+        result.Error.Should().NotBeNull();
+        result.Error.Code.Should().Be("MiniTrello.Ticket.DeletedTicket");
     }
 }

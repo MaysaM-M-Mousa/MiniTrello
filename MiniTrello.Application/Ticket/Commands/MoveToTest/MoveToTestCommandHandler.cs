@@ -1,8 +1,9 @@
 ﻿using MediatR;
+using MiniTrello.Domain.Primitives.Result;
 
 namespace MiniTrello.Application.Ticket.Commands.MoveToTest;
 
-internal sealed class MoveToTestCommandHandler : IRequestHandler<MoveToTestCommand>
+internal sealed class MoveToTestCommandHandler : IRequestHandler<MoveToTestCommand, Result>
 {
     private readonly ITicketRepository _ticketRepository;
     private readonly IMediator _mediator;
@@ -13,13 +14,18 @@ internal sealed class MoveToTestCommandHandler : IRequestHandler<MoveToTestComma
         _mediator = mediator;
     }
 
-    public async Task Handle(MoveToTestCommand request, CancellationToken cancellationToken)
+    public async Task<Result> Handle(MoveToTestCommand request, CancellationToken cancellationToken)
     {
         var events = await _ticketRepository.GetEventsAsync(request.TicketId);
 
         var ticket = Domain.Ticket.Ticket.Load(request.TicketId, events);
 
-        ticket.MoveToTest();
+        var result = ticket.MoveToTest();
+
+        if (result.IsFailure)
+        {
+            return result;
+        }
 
         await _ticketRepository.SaveEventsAsync(ticket.AggregateId, ticket.UncommittedEvents.ToList());
 
@@ -29,5 +35,7 @@ internal sealed class MoveToTestCommandHandler : IRequestHandler<MoveToTestComma
         }
 
         ticket.ClearUncommittedEvents();
+
+        return Result.Success();
     }
 }

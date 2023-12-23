@@ -36,6 +36,6 @@ internal sealed class UpdateStoryPointsCommandHandler : IRequestHandler<UpdateSt
 
         ticket.ClearUncommittedEvents();
 
-        return result;
+        return Result.Success();
     }
 }

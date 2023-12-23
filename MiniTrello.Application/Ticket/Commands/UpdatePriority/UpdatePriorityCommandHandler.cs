@@ -39,6 +39,6 @@ internal sealed class UpdatePriorityCommandHandler : IRequestHandler<UpdatePrior
 
         ticket.ClearUncommittedEvents();
 
-        return result;
+        return Result.Success();
     }
 }

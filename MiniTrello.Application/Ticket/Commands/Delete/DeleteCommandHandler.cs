@@ -36,6 +36,6 @@ internal sealed class DeleteCommandHandler : IRequestHandler<DeleteCommand, Resu
 
         ticket.ClearUncommittedEvents();
 
-        return result;
+        return Result.Success();
     }
 }

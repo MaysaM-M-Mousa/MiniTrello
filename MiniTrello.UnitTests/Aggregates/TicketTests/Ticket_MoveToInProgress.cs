@@ -1,9 +1,7 @@
 ﻿using FluentAssertions;
-using MiniTrello.Domain.Exceptions;
 using MiniTrello.Domain.Ticket;
 using MiniTrello.Domain.Ticket.DomainEvents;
 using MiniTrello.UnitTests.Aggregates.Builders;
-using System.Security.Cryptography.X509Certificates;
 
 namespace MiniTrello.UnitTests.Aggregates.TicketTests;
 
@@ -14,8 +12,9 @@ public class Ticket_MoveToInProgress
     {
         var ticket = new TicketBuilder().BuildAssignedTicket();
 
-        ticket.MoveToInProgress();
+        var result = ticket.MoveToInProgress();
 
+        result.IsSuccess.Should().BeTrue();
         ticket.Status.Should().Be(TicketStatus.InProgress);
         ticket.UncommittedEvents.Count.Should().Be(1);
         ticket.UncommittedEvents.Single().Should().BeOfType(typeof(TicketMovedToInProgressDomainEvent));
@@ -26,20 +25,22 @@ public class Ticket_MoveToInProgress
     {
         var ticket = new TicketBuilder().BuildTestStatusTicket();
 
-        ticket.MoveToInProgress();
+        var result = ticket.MoveToInProgress();
 
+        result.IsSuccess.Should().BeTrue();
         ticket.Status.Should().Be(TicketStatus.InProgress);
         ticket.UncommittedEvents.Count.Should().Be(1);
         ticket.UncommittedEvents.Single().Should().BeOfType(typeof(TicketMovedToInProgressDomainEvent));
     }
 
     [Fact]
-    public void MovingAlreadyInProgressTicket_To_InProgress_DoesNothing()
+    public void MovingAlreadyInProgressTicket_To_InProgress_Fails()
     {
         var ticket = new TicketBuilder().BuildInProgressStatusTicket();
 
-        ticket.MoveToInProgress();
+        var result = ticket.MoveToInProgress();
 
+        result.IsFailure.Should().BeTrue();
         ticket.Status.Should().Be(TicketStatus.InProgress);
         ticket.UncommittedEvents.Should().BeEmpty();
     }
@@ -49,11 +50,11 @@ public class Ticket_MoveToInProgress
     {
         var ticket = new TicketBuilder().BuildCodeReviewStatusTicket();
 
-        var act = () => ticket.MoveToInProgress();
+        var result = ticket.MoveToInProgress();
 
-        act.Should()
-            .Throw<MiniTrelloValidationException>()
-            .WithMessage("Only Ticket in ToDo or Test lists can be moved to InProgress list!");
+        result.IsFailure.Should().BeTrue();
+        result.Error.Should().NotBeNull();
+        result.Error.Code.Should().Be("MiniTrello.Ticket.InvalidOperation");
     }
 
     [Fact]
@@ -61,11 +62,11 @@ public class Ticket_MoveToInProgress
     {
         var ticket = new TicketBuilder().BuildDoneStatusTicket();
 
-        var act = () => ticket.MoveToInProgress();
+        var result = ticket.MoveToInProgress();
 
-        act.Should()
-            .Throw<MiniTrelloValidationException>()
-            .WithMessage("Only Ticket in ToDo or Test lists can be moved to InProgress list!");
+        result.IsFailure.Should().BeTrue();
+        result.Error.Should().NotBeNull();
+        result.Error.Code.Should().Be("MiniTrello.Ticket.InvalidOperation");
     }
 
     [Fact]
@@ -73,11 +74,11 @@ public class Ticket_MoveToInProgress
     {
         var ticket = new TicketBuilder().BuildUnassignedTicket();
 
-        var act = () => ticket.MoveToInProgress();
-
-        act.Should()
-            .Throw<MiniTrelloValidationException>()
-            .WithMessage("You can not moved unassigned ticket to InProgress!");
+        var result = ticket.MoveToInProgress();
+        
+        result.IsFailure.Should().BeTrue();
+        result.Error.Should().NotBeNull();
+        result.Error.Code.Should().Be("MiniTrello.Ticket.UnassignedTicket");
     }
 
     [Fact]
@@ -85,10 +86,10 @@ public class Ticket_MoveToInProgress
     {
         var ticket = new TicketBuilder().BuildDeletedTicket();
 
-        var act = () => ticket.MoveToInProgress();
+        var result = ticket.MoveToInProgress();
 
-        act.Should()
-            .Throw<MiniTrelloValidationException>()
-            .WithMessage("Can't Perform actions on deleted ticket!");
+        result.IsFailure.Should().BeTrue();
+        result.Error.Should().NotBeNull();
+        result.Error.Code.Should().Be("MiniTrello.Ticket.DeletedTicket");
     }
 }

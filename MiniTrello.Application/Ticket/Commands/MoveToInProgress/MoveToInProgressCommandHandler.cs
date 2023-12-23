@@ -1,8 +1,9 @@
 ﻿using MediatR;
+using MiniTrello.Domain.Primitives.Result;
 
 namespace MiniTrello.Application.Ticket.Commands.MoveToInProgress;
 
-internal sealed class MoveToInProgressCommandHandler : IRequestHandler<MoveToInProgressCommand>
+internal sealed class MoveToInProgressCommandHandler : IRequestHandler<MoveToInProgressCommand, Result>
 {
     private readonly ITicketRepository _ticketRepository;
     private readonly IMediator _mediator;
@@ -13,13 +14,18 @@ internal sealed class MoveToInProgressCommandHandler : IRequestHandler<MoveToInP
         _mediator = mediator;
     }
 
-    public async Task Handle(MoveToInProgressCommand request, CancellationToken cancellationToken)
+    public async Task<Result> Handle(MoveToInProgressCommand request, CancellationToken cancellationToken)
     {
         var events = await _ticketRepository.GetEventsAsync(request.TicketId);
 
         var ticket = Domain.Ticket.Ticket.Load(request.TicketId, events);
         
-        ticket.MoveToInProgress();
+        var result = ticket.MoveToInProgress();
+
+        if (result.IsFailure)
+        {
+            return result;
+        }
 
         await _ticketRepository.SaveEventsAsync(ticket.AggregateId, ticket.UncommittedEvents.ToList());
 
@@ -29,5 +35,7 @@ internal sealed class MoveToInProgressCommandHandler : IRequestHandler<MoveToInP
         }
 
         ticket.ClearUncommittedEvents();
+
+        return Result.Success();
     }
 }

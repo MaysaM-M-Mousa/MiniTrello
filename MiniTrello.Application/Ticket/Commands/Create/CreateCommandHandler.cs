@@ -34,6 +34,6 @@ internal sealed class CreateCommandHandler : IRequestHandler<CreateCommand, Resu
 
         ticket.ClearUncommittedEvents();
 
-        return result;
+        return Result.Success();
     }
 }

@@ -36,6 +36,6 @@ internal sealed class UnassignCommandHandler : IRequestHandler<UnassignCommand, 
 
         ticket.ClearUncommittedEvents();
 
-        return result;
+        return Result.Success();
     }
 }

@@ -38,27 +38,43 @@ namespace MiniTrello.Web.Controllers
         }
 
         [HttpPost("{ticketId}/in-progress")]
-        public async Task MoveToInProgress(Guid ticketId)
+        public async Task<IActionResult> MoveToInProgress(Guid ticketId)
         {
-            await _mediator.Send(new MoveToInProgressCommand(ticketId));
+            var res = await _mediator.Send(new MoveToInProgressCommand(ticketId));
+
+            return res.Match<IActionResult>(
+                onSuccess: () => Ok(),
+                onFailure: (e) => BadRequest(e));
         }
 
         [HttpPost("{ticketId}/code-review")]
-        public async Task MoveToCodeReview(Guid ticketId)
+        public async Task<IActionResult> MoveToCodeReview(Guid ticketId)
         {
-            await _mediator.Send(new MoveToCodeReviewCommand(ticketId));
+            var res = await _mediator.Send(new MoveToCodeReviewCommand(ticketId));
+
+            return res.Match<IActionResult>(
+                onSuccess: () => Ok(),
+                onFailure: (e) => BadRequest(e));
         }
 
         [HttpPost("{ticketId}/test")]
-        public async Task MoveToTest(Guid ticketId)
+        public async Task<IActionResult> MoveToTest(Guid ticketId)
         {
-            await _mediator.Send(new MoveToTestCommand(ticketId));
+            var res = await _mediator.Send(new MoveToTestCommand(ticketId));
+
+            return res.Match<IActionResult>(
+                onSuccess: () => Ok(),
+                onFailure: (e) => BadRequest(e));
         }
 
         [HttpPost("{ticketId}/done")]
-        public async Task MoveToDone(Guid ticketId)
+        public async Task<IActionResult> MoveToDone(Guid ticketId)
         {
-            await _mediator.Send(new MoveToDoneCommand(ticketId));
+            var res = await _mediator.Send(new MoveToDoneCommand(ticketId));
+
+            return res.Match<IActionResult>(
+                onSuccess: () => Ok(),
+                onFailure: (e) => BadRequest(e));
         }
 
         [HttpPut("{ticketId}/priority")]
