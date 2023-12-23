@@ -22,4 +22,6 @@ public class Result
     public static Result Success() => new(true);
 
     public static Result Failure(Error error) => new(false, error);
+
+    public static implicit operator Result(Error error) => Failure(error);
 }
