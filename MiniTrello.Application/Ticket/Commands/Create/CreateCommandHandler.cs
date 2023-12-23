@@ -1,8 +1,9 @@
 ﻿using MediatR;
+using MiniTrello.Domain.Primitives.Result;
 
 namespace MiniTrello.Application.Ticket.Commands.Create;
 
-internal sealed class CreateCommandHandler : IRequestHandler<CreateCommand>
+internal sealed class CreateCommandHandler : IRequestHandler<CreateCommand, Result>
 {
     private readonly ITicketRepository _ticketRepository;
     private readonly IMediator _mediator;
@@ -13,9 +14,16 @@ internal sealed class CreateCommandHandler : IRequestHandler<CreateCommand>
         _mediator = mediator;
     }
 
-    public async Task Handle(CreateCommand request, CancellationToken cancellationToken)
+    public async Task<Result> Handle(CreateCommand request, CancellationToken cancellationToken)
     {
-        var ticket = Domain.Ticket.Ticket.Create();
+        var result = Domain.Ticket.Ticket.Create();
+
+        if (result.IsFailure)
+        {
+            return result;
+        }
+
+        var ticket = result.Value;
 
         await _ticketRepository.SaveEventsAsync(ticket.AggregateId, ticket.UncommittedEvents.ToList());
 
@@ -25,5 +33,7 @@ internal sealed class CreateCommandHandler : IRequestHandler<CreateCommand>
         }
 
         ticket.ClearUncommittedEvents();
+
+        return result;
     }
 }

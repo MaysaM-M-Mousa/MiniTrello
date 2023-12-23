@@ -14,7 +14,7 @@ public abstract class AggregateRoot
 
     public IReadOnlyList<IDomainEvent> UncommittedEvents => _uncommittedEvents.ToList().AsReadOnly();
 
-    public void AddUncommittedEvent(IDomainEvent domainEvent) => _uncommittedEvents.Add(domainEvent);
+    protected void AddUncommittedEvent(IDomainEvent domainEvent) => _uncommittedEvents.Add(domainEvent);
 
     public void ClearUncommittedEvents() => _uncommittedEvents.Clear();
 }

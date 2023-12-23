@@ -23,7 +23,7 @@ public sealed class Ticket : AggregateRoot
         Status = status;
     }
 
-    public static Ticket Create()
+    public static Result<Ticket> Create()
     {
         var ticket = new Ticket(Guid.NewGuid(), string.Empty, TicketStatus.ToDo);
 

@@ -12,6 +12,7 @@ using MiniTrello.Application.Ticket.Commands.UpdatePriority;
 using MiniTrello.Application.Ticket.Commands.UpdateStoryPoints;
 using MiniTrello.Contracts.Ticket;
 using MiniTrello.Domain.Primitives.Result;
+using MiniTrello.Domain.Ticket;
 
 namespace MiniTrello.Web.Controllers
 {
@@ -28,9 +29,13 @@ namespace MiniTrello.Web.Controllers
         }
 
         [HttpPost]
-        public async Task CreateTicket()
+        public async Task<IActionResult> CreateTicket()
         {
-            await _mediator.Send(new CreateCommand());
+            var res = await _mediator.Send(new CreateCommand());
+
+            return res.Match<IActionResult>(
+                onSuccess: () => Ok(),
+                onFailure: (e) => BadRequest(e));
         }
 
         [HttpPost("{ticketId}/in-progress")]

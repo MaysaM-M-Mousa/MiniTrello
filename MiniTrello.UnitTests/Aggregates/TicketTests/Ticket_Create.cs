@@ -9,11 +9,13 @@ public class Ticket_Create
     [Fact]
     public void CreateTicket()
     {
-        var ticket = Ticket.Create();
+        var result = Ticket.Create();
 
-        ticket.Assignee.Should().Be(string.Empty);
-        ticket.Status.Should().Be(TicketStatus.ToDo);
-        ticket.UncommittedEvents.Count.Should().Be(1);
-        ticket.UncommittedEvents.Single().Should().BeOfType(typeof(TicketCreatedDomainEvent));
+        result.IsSuccess.Should().BeTrue();
+        var createdTicket = result.Value;
+        createdTicket.Assignee.Should().Be(string.Empty);
+        createdTicket.Status.Should().Be(TicketStatus.ToDo);
+        createdTicket.UncommittedEvents.Count.Should().Be(1);
+        createdTicket.UncommittedEvents.Single().Should().BeOfType(typeof(TicketCreatedDomainEvent));
     }
 }
