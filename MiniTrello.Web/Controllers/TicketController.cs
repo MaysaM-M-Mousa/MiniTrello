@@ -85,9 +85,13 @@ namespace MiniTrello.Web.Controllers
         }
 
         [HttpPost("{ticketId}/unassign")]
-        public async Task UnassgineTicket(Guid ticketId)
+        public async Task<IActionResult> UnassgineTicket(Guid ticketId)
         {
-            await _mediator.Send(new UnassignCommand(ticketId));
+            var res = await _mediator.Send(new UnassignCommand(ticketId)); ;
+
+            return res.Match<IActionResult>(
+                onSuccess: () => Ok(),
+                onFailure: (e) => BadRequest(e));
         }
 
         [HttpDelete("{ticketId}")]

@@ -12,11 +12,11 @@ public class Ticket_Unassign
     {
         var ticket = new TicketBuilder().BuildUnassignedTicket();
 
-        var act = () => ticket.Unassign();
+        var result = ticket.Unassign();
 
-        act.Should()
-            .Throw<TicketAlreadyUnassignedException>()
-            .WithMessage("The ticket already unassigned");
+        result.IsFailure.Should().BeTrue();
+        result.Error.Should().NotBeNull();
+        result.Error.Code.Should().Be("MiniTrello.Ticket.UnassignedTicket");
     }
 
     [Fact]
@@ -24,8 +24,9 @@ public class Ticket_Unassign
     {
         var ticket = new TicketBuilder().BuildAssignedTicket();
 
-        ticket.Unassign();
+        var result = ticket.Unassign();
 
+        result.IsSuccess.Should().BeTrue();
         ticket.Assignee.Should().Be(string.Empty);
         ticket.UncommittedEvents.Count.Should().Be(1);
         ticket.UncommittedEvents.Single().Should().BeOfType(typeof(TicketUnassignedDomainEvent));
@@ -36,10 +37,10 @@ public class Ticket_Unassign
     {
         var ticket = new TicketBuilder().BuildDeletedTicket();
 
-        var act = () => ticket.Unassign();
+        var result = ticket.Unassign();
 
-        act.Should()
-            .Throw<MiniTrelloValidationException>()
-            .WithMessage("Can't Perform actions on deleted ticket!");
+        result.IsFailure.Should().BeTrue();
+        result.Error.Should().NotBeNull();
+        result.Error.Code.Should().Be("MiniTrello.Ticket.DeletedTicket");
     }
 }

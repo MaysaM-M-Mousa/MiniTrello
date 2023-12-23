@@ -55,22 +55,24 @@ public sealed class Ticket : AggregateRoot
         return Result.Success();
     }
 
-    public void Unassign()
+    public Result Unassign()
     {
         if (IsDeleted)
         {
-            throw new MiniTrelloValidationException("Can't Perform actions on deleted ticket!");
+            return TicketErrors.DeletedTicket();
         }
 
         if (string.IsNullOrEmpty(Assignee))
         {
-            throw new TicketAlreadyUnassignedException();
+            return TicketErrors.UnassignedTicket();
         }
 
         var @event = new TicketUnassignedDomainEvent(AggregateId);
 
         AddUncommittedEvent(@event);
         Apply(@event);
+
+        return Result.Success();
     }
 
     public void UpdatePriority(Priority priority)
