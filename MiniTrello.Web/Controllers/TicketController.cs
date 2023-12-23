@@ -102,9 +102,13 @@ namespace MiniTrello.Web.Controllers
         }
 
         [HttpDelete("{ticketId}")]
-        public async Task DeleteTicket(Guid ticketId)
+        public async Task<IActionResult> DeleteTicket(Guid ticketId)
         {
-            await _mediator.Send(new DeleteCommand(ticketId));
+            var res = await _mediator.Send(new DeleteCommand(ticketId));
+
+            return res.Match<IActionResult>(
+                onSuccess: () => Ok(),
+                onFailure: (e) => BadRequest(e));
         }
     }
 }

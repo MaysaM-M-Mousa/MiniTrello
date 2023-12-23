@@ -1,5 +1,4 @@
 ﻿using FluentAssertions;
-using MiniTrello.Domain.Exceptions;
 using MiniTrello.Domain.Ticket.DomainEvents;
 using MiniTrello.UnitTests.Aggregates.Builders;
 
@@ -12,8 +11,9 @@ public class Ticket_Delete
     {
         var ticket = new TicketBuilder().BuildAssignedTicket();
 
-        ticket.Delete();
+        var result = ticket.Delete();
 
+        result.IsSuccess.Should().BeTrue(); 
         ticket.IsDeleted.Should().BeTrue();
         ticket.UncommittedEvents.Count.Should().Be(1);
         ticket.UncommittedEvents.Single().Should().BeOfType(typeof(TicketDeletedDomainEvent));
@@ -24,10 +24,10 @@ public class Ticket_Delete
     {
         var ticket = new TicketBuilder().BuildDeletedTicket();
 
-        var act = () => ticket.Delete();
+        var result = ticket.Delete();
 
-        act.Should()
-            .Throw<MiniTrelloValidationException>()
-            .WithMessage("This ticket already deleted!");
+        result.IsFailure.Should().BeTrue();
+        result.Error.Should().NotBeNull();
+        result.Error.Code.Should().Be("MiniTrello.Ticket.DeletedTicket");
     }
 }

@@ -1,8 +1,9 @@
 ﻿using MediatR;
+using MiniTrello.Domain.Primitives.Result;
 
 namespace MiniTrello.Application.Ticket.Commands.Delete;
 
-internal sealed class DeleteCommandHandler : IRequestHandler<DeleteCommand>
+internal sealed class DeleteCommandHandler : IRequestHandler<DeleteCommand, Result>
 {
     private readonly ITicketRepository _ticketRepository;
     private readonly IMediator _mediator;
@@ -13,13 +14,18 @@ internal sealed class DeleteCommandHandler : IRequestHandler<DeleteCommand>
         _mediator = mediator;
     }
 
-    public async Task Handle(DeleteCommand request, CancellationToken cancellationToken)
+    public async Task<Result> Handle(DeleteCommand request, CancellationToken cancellationToken)
     {
         var events = await _ticketRepository.GetEventsAsync(request.TicketId);
 
         var ticket = Domain.Ticket.Ticket.Load(request.TicketId, events);
 
-        ticket.Delete();
+        var result = ticket.Delete();
+
+        if (result.IsFailure)
+        {
+            return result;
+        }
 
         await _ticketRepository.SaveEventsAsync(ticket.AggregateId, ticket.UncommittedEvents.ToList());
 
@@ -29,5 +35,7 @@ internal sealed class DeleteCommandHandler : IRequestHandler<DeleteCommand>
         }
 
         ticket.ClearUncommittedEvents();
+
+        return result;
     }
 }

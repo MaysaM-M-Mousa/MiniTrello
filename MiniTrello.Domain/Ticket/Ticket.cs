@@ -200,17 +200,19 @@ public sealed class Ticket : AggregateRoot
         Apply(@event);
     }
 
-    public void Delete()
+    public Result Delete()
     {
         if (IsDeleted)
         {
-            throw new MiniTrelloValidationException("This ticket already deleted!");
+            return TicketErrors.DeletedTicket();
         }
 
         var @event = new TicketDeletedDomainEvent(this.AggregateId);
 
         AddUncommittedEvent(@event);
         Apply(@event);
+
+        return Result.Success();
     }
 
     public static Ticket Load(Guid aggregateId, List<IDomainEvent> events)
