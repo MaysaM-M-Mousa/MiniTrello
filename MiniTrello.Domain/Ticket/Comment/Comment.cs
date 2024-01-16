@@ -29,14 +29,14 @@ public class Comment : AggregateRoot
         return comment;
     }
 
-    public Result DeleteComment(Guid commentId) 
+    public Result DeleteComment() 
     {
         if (IsDeleted)
         {
             return CommentErrors.DeletedComment();
         }
 
-        var @event = new CommentDeletedDomainEvent(commentId);
+        var @event = new CommentDeletedDomainEvent(AggregateId);
 
         AddUncommittedEvent(@event);
         Apply(@event);
