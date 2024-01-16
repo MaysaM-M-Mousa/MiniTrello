@@ -33,7 +33,7 @@ public class Comment : AggregateRoot
     {
         if (IsDeleted)
         {
-            // Error: already deleted comment!
+            return CommentErrors.DeletedComment();
         }
 
         var @event = new CommentDeletedDomainEvent(commentId);
