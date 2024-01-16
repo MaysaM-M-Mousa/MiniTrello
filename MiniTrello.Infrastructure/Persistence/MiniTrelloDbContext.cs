@@ -1,5 +1,4 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using MiniTrello.Domain.Ticket;
 
 namespace MiniTrello.Infrastructure.Persistence;
 
@@ -11,6 +10,4 @@ internal class MiniTrelloDbContext : DbContext
     {
         modelBuilder.ApplyConfigurationsFromAssembly(typeof(MiniTrelloDbContext).Assembly);
     }
-
-    public DbSet<Comment> Comment { get; set; } = null!;
 }
