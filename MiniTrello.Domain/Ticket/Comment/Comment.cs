@@ -29,6 +29,21 @@ public class Comment : AggregateRoot
         return comment;
     }
 
+    public Result ModifyCommentContent(string text)
+    {
+        if (IsDeleted)
+        {
+            return CommentErrors.DeletedComment();
+        }
+
+        var @event = new CommentContentModifiedDomainEvent(AggregateId, text);
+
+        AddUncommittedEvent(@event);
+        Apply(@event);
+
+        return Result.Success();
+    }
+
     public Result DeleteComment() 
     {
         if (IsDeleted)
@@ -71,13 +86,12 @@ public class Comment : AggregateRoot
         }
     }
 
-    public void Apply(CommentAddedDomainEvent @event)
-    {
-
-    }
+    public void Apply(CommentAddedDomainEvent @event) { }
 
     public void Apply(CommentDeletedDomainEvent @event)
     {
         IsDeleted = true;
     }
+
+    public void Apply(CommentContentModifiedDomainEvent @event) { }
 }
