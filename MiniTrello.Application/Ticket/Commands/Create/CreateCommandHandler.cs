@@ -5,12 +5,12 @@ namespace MiniTrello.Application.Ticket.Commands.Create;
 
 internal sealed class CreateCommandHandler : IRequestHandler<CreateCommand, Result>
 {
-    private readonly ITicketRepository _ticketRepository;
+    private readonly IEventStore _eventStore;
     private readonly IMediator _mediator;
 
-    public CreateCommandHandler(ITicketRepository ticketRepository, IMediator mediator)
+    public CreateCommandHandler(IEventStore eventStore, IMediator mediator)
     {
-        _ticketRepository = ticketRepository;
+        _eventStore = eventStore;
         _mediator = mediator;
     }
 
@@ -25,7 +25,7 @@ internal sealed class CreateCommandHandler : IRequestHandler<CreateCommand, Resu
 
         var ticket = result.Value;
 
-        await _ticketRepository.SaveEventsAsync(ticket.AggregateId, ticket.UncommittedEvents.ToList());
+        await _eventStore.SaveEventsAsync(ticket.AggregateId, ticket.UncommittedEvents.ToList());
 
         foreach(var @event in ticket.UncommittedEvents.ToList())
         {

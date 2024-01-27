@@ -3,7 +3,7 @@ using MiniTrello.Domain.Primitives;
 
 namespace MiniTrello.Infrastructure.Persistence.Repositories;
 
-internal sealed class InMemoryTicketRepository : ITicketRepository
+internal sealed class InMemoryEventStore : IEventStore
 {
     private readonly Dictionary<Guid, List<IDomainEvent>> _events = new();
 

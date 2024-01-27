@@ -5,18 +5,18 @@ namespace MiniTrello.Application.Ticket.Commands.MoveToTest;
 
 internal sealed class MoveToTestCommandHandler : IRequestHandler<MoveToTestCommand, Result>
 {
-    private readonly ITicketRepository _ticketRepository;
+    private readonly IEventStore _eventStore;
     private readonly IMediator _mediator;
 
-    public MoveToTestCommandHandler(ITicketRepository ticketRepository, IMediator mediator)
+    public MoveToTestCommandHandler(IEventStore eventStore, IMediator mediator)
     {
-        _ticketRepository = ticketRepository;
+        _eventStore = eventStore;
         _mediator = mediator;
     }
 
     public async Task<Result> Handle(MoveToTestCommand request, CancellationToken cancellationToken)
     {
-        var events = await _ticketRepository.GetEventsAsync(request.TicketId);
+        var events = await _eventStore.GetEventsAsync(request.TicketId);
 
         var ticket = Domain.Ticket.Ticket.Load(request.TicketId, events);
 
@@ -27,7 +27,7 @@ internal sealed class MoveToTestCommandHandler : IRequestHandler<MoveToTestComma
             return result;
         }
 
-        await _ticketRepository.SaveEventsAsync(ticket.AggregateId, ticket.UncommittedEvents.ToList());
+        await _eventStore.SaveEventsAsync(ticket.AggregateId, ticket.UncommittedEvents.ToList());
 
         foreach (var @event in ticket.UncommittedEvents.ToList())
         {

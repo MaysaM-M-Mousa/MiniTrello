@@ -1,6 +1,6 @@
 ﻿using MiniTrello.Domain.Primitives;
 
-public interface ITicketRepository
+public interface IEventStore
 {
     Task SaveEventsAsync(Guid aggregateId, List<IDomainEvent> events);
 

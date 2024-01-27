@@ -11,7 +11,7 @@ public static class DependencyInjection
 {
     public static IServiceCollection AddInfrastructureDependencies(this IServiceCollection services, IConfiguration configuration)
     {
-        services.AddSingleton<ITicketRepository, InMemoryTicketRepository>();
+        services.AddSingleton<IEventStore, InMemoryEventStore>();
         services.AddSingleton<ITicketDetailsProjectionRepository, InMemoryTicketDetailsProjectionRepository>();
 
         services.AddDbContext<MiniTrelloDbContext>(
