@@ -2,7 +2,9 @@
 
 namespace MiniTrello.Domain.Ticket.Comment.DomainEvents;
 
-public sealed record CommentContentModifiedDomainEvent(Guid AggregateId, string Text) : IDomainEvent
+public sealed record CommentContentModifiedDomainEvent(
+    Guid AggregateId, 
+    string Content) : IDomainEvent
 {
     public Guid Id { get; set; } = Guid.NewGuid();
 

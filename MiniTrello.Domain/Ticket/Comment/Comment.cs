@@ -17,11 +17,11 @@ public class Comment : AggregateRoot
         TicketId = ticketId;
     }
 
-    public static Result<Comment> AddComment(Guid ticketId, string user, string text)
+    public static Result<Comment> AddComment(Guid ticketId, string user, string content)
     {
         var comment = new Comment(Guid.NewGuid(), ticketId);
 
-        var @event = new CommentAddedDomainEvent(comment.AggregateId, ticketId, user, text);
+        var @event = new CommentAddedDomainEvent(comment.AggregateId, ticketId, user, content);
 
         comment.AddUncommittedEvent(@event);
         comment.Apply(@event);
@@ -29,14 +29,14 @@ public class Comment : AggregateRoot
         return comment;
     }
 
-    public Result ModifyCommentContent(string text)
+    public Result ModifyCommentContent(string content)
     {
         if (IsDeleted)
         {
             return CommentErrors.DeletedComment();
         }
 
-        var @event = new CommentContentModifiedDomainEvent(AggregateId, text);
+        var @event = new CommentContentModifiedDomainEvent(AggregateId, content);
 
         AddUncommittedEvent(@event);
         Apply(@event);
