@@ -1,5 +1,4 @@
-﻿using MiniTrello.Domain.Exceptions;
-using MiniTrello.Domain.Primitives;
+﻿using MiniTrello.Domain.Primitives;
 using MiniTrello.Domain.Primitives.Result;
 using MiniTrello.Domain.Ticket.DomainEvents;
 
@@ -33,6 +32,16 @@ public sealed class Ticket : AggregateRoot
         ticket.Apply(@event);
 
         return ticket;
+    }
+
+    public Result<Comment.Comment> AddComment(string user, string content)
+    {
+        if (IsDeleted)
+        {
+            return TicketErrors.DeletedTicket();
+        }
+
+        return Comment.Comment.CreateComment(AggregateId, user, content);
     }
 
     public Result Assign(string assignee)

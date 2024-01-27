@@ -9,7 +9,7 @@ public class Comment_Add
     [Fact]
     public void AddingNewComment_Succeeds()
     {
-        var result = Comment.AddComment(Guid.NewGuid(), "Maysam", "Some content");
+        var result = Comment.CreateComment(Guid.NewGuid(), "Maysam", "Some content");
 
         result.IsSuccess.Should().BeTrue();
         var addComment = result.Value;

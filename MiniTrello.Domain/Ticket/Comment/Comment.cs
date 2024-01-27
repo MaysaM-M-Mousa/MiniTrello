@@ -17,7 +17,7 @@ public class Comment : AggregateRoot
         TicketId = ticketId;
     }
 
-    public static Result<Comment> AddComment(Guid ticketId, string user, string content)
+    public static Result<Comment> CreateComment(Guid ticketId, string user, string content)
     {
         var comment = new Comment(Guid.NewGuid(), ticketId);
 
