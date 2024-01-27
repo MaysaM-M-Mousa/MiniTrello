@@ -1,5 +1,6 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Mvc;
+using MiniTrello.Application.Ticket.Commands.AddComment;
 using MiniTrello.Application.Ticket.Commands.Assign;
 using MiniTrello.Application.Ticket.Commands.Create;
 using MiniTrello.Application.Ticket.Commands.Delete;
@@ -10,6 +11,7 @@ using MiniTrello.Application.Ticket.Commands.MoveToTest;
 using MiniTrello.Application.Ticket.Commands.Unassign;
 using MiniTrello.Application.Ticket.Commands.UpdatePriority;
 using MiniTrello.Application.Ticket.Commands.UpdateStoryPoints;
+using MiniTrello.Contracts.Comment;
 using MiniTrello.Contracts.Ticket;
 using MiniTrello.Domain.Primitives.Result;
 
@@ -121,6 +123,16 @@ namespace MiniTrello.Web.Controllers
         public async Task<IActionResult> DeleteTicket(Guid ticketId)
         {
             var res = await _mediator.Send(new DeleteCommand(ticketId));
+
+            return res.Match<IActionResult>(
+                onSuccess: () => Ok(),
+                onFailure: (e) => BadRequest(e));
+        }
+
+        [HttpPost("{ticketId}/comments")]
+        public async Task<IActionResult> AddCommentToTicket(Guid ticketId, [FromBody] AddCommentRequest request)
+        {
+            var res = await _mediator.Send(new AddCommentCommand(ticketId, request.User, request.Content));
 
             return res.Match<IActionResult>(
                 onSuccess: () => Ok(),
