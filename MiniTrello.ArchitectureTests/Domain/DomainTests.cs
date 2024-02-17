@@ -2,6 +2,7 @@
 using MediatR;
 using MiniTrello.Domain.Primitives;
 using MiniTrello.Domain.Ticket;
+using MiniTrello.Domain.Ticket.Comment;
 using NetArchTest.Rules;
 using System.Reflection;
 
@@ -15,7 +16,10 @@ public class DomainTests
     public void DomainEvents_ShouldBe_Sealed()
     {
         var result = Types.InAssembly(DomainAssembly)
-            .That().ImplementInterface(typeof(IDomainEvent))
+            .That()
+            .ImplementInterface(typeof(ITicketDomainEvent))
+            .Or()
+            .ImplementInterface(typeof(ICommentDomainEvent))
             .Should()
             .BeSealed()
             .GetResult();

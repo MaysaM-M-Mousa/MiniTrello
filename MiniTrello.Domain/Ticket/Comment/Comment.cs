@@ -70,7 +70,7 @@ public class Comment : AggregateRoot
 
         return comment;
     }
-
+               
     public override void When(IDomainEvent @event) 
     {
         switch (@event)
