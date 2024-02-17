@@ -31,7 +31,7 @@ internal sealed class ModifyCommentCommandHandler : IRequestHandler<ModifyCommen
 
         await _eventStore.SaveEventsAsync(comment.AggregateId, comment.UncommittedEvents.ToList());
         
-        foreach(var @event in commentEvents) 
+        foreach(var @event in comment.UncommittedEvents.ToList()) 
         {
             await _mediator.Publish(@event);
         }
