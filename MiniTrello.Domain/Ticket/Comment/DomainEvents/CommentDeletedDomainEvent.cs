@@ -3,7 +3,7 @@
 namespace MiniTrello.Domain.Ticket.Comment.DomainEvents;
 
 public sealed record CommentDeletedDomainEvent(
-    Guid AggregateId) : IDomainEvent
+    Guid AggregateId) : ICommentDomainEvent
 {
     public Guid Id { get; set; } = Guid.NewGuid();
 

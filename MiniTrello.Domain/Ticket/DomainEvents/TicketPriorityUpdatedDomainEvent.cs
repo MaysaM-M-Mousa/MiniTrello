@@ -4,7 +4,7 @@ namespace MiniTrello.Domain.Ticket.DomainEvents;
 
 public sealed record TicketPriorityUpdatedDomainEvent(
     Guid AggregateId, 
-    Priority priority) : IDomainEvent
+    Priority priority) : ITicketDomainEvent
 {
     public Guid Id { get; set; } = Guid.NewGuid();
 

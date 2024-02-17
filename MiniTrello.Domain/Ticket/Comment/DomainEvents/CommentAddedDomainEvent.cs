@@ -6,7 +6,7 @@ public sealed record CommentAddedDomainEvent(
     Guid AggregateId,
     Guid TicketId,
     string User,
-    string Content) : IDomainEvent
+    string Content) : ICommentDomainEvent
 {
     public Guid Id { get; set; } = Guid.NewGuid();
 

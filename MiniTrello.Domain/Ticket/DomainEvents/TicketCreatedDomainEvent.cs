@@ -6,7 +6,7 @@ public sealed record TicketCreatedDomainEvent(
     Guid AggregateId, 
     string Assignee, 
     Priority Priority, 
-    TicketStatus Status) : IDomainEvent
+    TicketStatus Status) : ITicketDomainEvent
 {
     public Guid Id { get; set; } = Guid.NewGuid();
 

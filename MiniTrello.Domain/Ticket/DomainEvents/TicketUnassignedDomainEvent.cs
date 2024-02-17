@@ -2,7 +2,7 @@
 
 namespace MiniTrello.Domain.Ticket.DomainEvents;
 
-public sealed record TicketUnassignedDomainEvent(Guid AggregateId) : IDomainEvent 
+public sealed record TicketUnassignedDomainEvent(Guid AggregateId) : ITicketDomainEvent
 {
     public Guid Id { get; set; } = Guid.NewGuid();
 

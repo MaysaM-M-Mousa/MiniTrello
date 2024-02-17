@@ -1,14 +1,16 @@
 ﻿using MediatR;
 using MiniTrello.Domain.Primitives.Result;
 
-namespace MiniTrello.Application.Ticket.Commands.AddComment;
+namespace MiniTrello.Application.Comment.AddComment;
 
-public sealed class AddCommentCommandHandler : IRequestHandler<AddCommentCommand, Result>
+internal class AddCommentCommandHandler : IRequestHandler<AddCommentCommand, Result>
 {
     private readonly IEventStore _eventStore;
     private readonly IMediator _mediator;
 
-    public AddCommentCommandHandler(IEventStore eventStore, IMediator mediator)
+    public AddCommentCommandHandler(
+        IEventStore eventStore,
+        IMediator mediator)
     {
         _eventStore = eventStore;
         _mediator = mediator;
@@ -31,7 +33,7 @@ public sealed class AddCommentCommandHandler : IRequestHandler<AddCommentCommand
 
         await _eventStore.SaveEventsAsync(addedComment.AggregateId, addedComment.UncommittedEvents.ToList());
 
-        foreach(var @event in addedComment.UncommittedEvents.ToList())
+        foreach (var @event in addedComment.UncommittedEvents.ToList())
         {
             await _mediator.Publish(@event);
         }

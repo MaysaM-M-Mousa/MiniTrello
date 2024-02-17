@@ -4,7 +4,7 @@ namespace MiniTrello.Domain.Ticket.DomainEvents;
 
 public sealed record TicketStoryPointsUpdatedDomainEvent(
     Guid AggregateId, 
-    int StoryPoints) : IDomainEvent
+    int StoryPoints) : ITicketDomainEvent
 {
     public Guid Id { get; set; } = Guid.NewGuid();
 

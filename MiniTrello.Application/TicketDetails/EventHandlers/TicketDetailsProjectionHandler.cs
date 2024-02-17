@@ -1,11 +1,11 @@
 ﻿using MediatR;
-using MiniTrello.Domain.Primitives;
+using MiniTrello.Domain.Ticket;
 using MiniTrello.Domain.Ticket.Projections.TicketDetails;
 
 namespace MiniTrello.Application.TicketDetails.EventHandlers;
 
 internal sealed class TicketDetailsProjectionHandler<TDomainEvent> : INotificationHandler<TDomainEvent>
-    where TDomainEvent : IDomainEvent
+    where TDomainEvent : ITicketDomainEvent
 {
     private readonly ITicketDetailsProjectionRepository _ticketDetailsProjectionRepository;
 
