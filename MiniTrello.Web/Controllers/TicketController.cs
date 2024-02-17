@@ -17,6 +17,9 @@ using MiniTrello.Domain.Primitives.Result;
 
 namespace MiniTrello.Web.Controllers
 {
+    /// <summary>
+    /// Controller for ticket
+    /// </summary>
     [ApiController]
     [ApiVersion("1.0")]
     [Route("api/v{version:apiVersion}/tickets")]
@@ -24,11 +27,17 @@ namespace MiniTrello.Web.Controllers
     {
         private readonly IMediator _mediator;
 
+        /// <summary>
+        /// Constructor
+        /// </summary>
         public TicketController(IMediator mediator)
         {
             _mediator = mediator;
         }
 
+        /// <summary>
+        /// Creates a ticket
+        /// </summary>
         [HttpPost]
         public async Task<IActionResult> CreateTicket()
         {
@@ -38,7 +47,10 @@ namespace MiniTrello.Web.Controllers
                 onSuccess: () => Ok(),
                 onFailure: (e) => BadRequest(e));
         }
-
+        
+        /// <summary>
+        /// Moves a ticket to in-progress
+        /// </summary>
         [HttpPost("{ticketId}/in-progress")]
         public async Task<IActionResult> MoveToInProgress(Guid ticketId)
         {
@@ -49,6 +61,9 @@ namespace MiniTrello.Web.Controllers
                 onFailure: (e) => BadRequest(e));
         }
 
+        /// <summary>
+        /// Moves a ticket to code review
+        /// </summary>
         [HttpPost("{ticketId}/code-review")]
         public async Task<IActionResult> MoveToCodeReview(Guid ticketId)
         {
@@ -59,6 +74,9 @@ namespace MiniTrello.Web.Controllers
                 onFailure: (e) => BadRequest(e));
         }
 
+        /// <summary>
+        /// Moves a ticket to test
+        /// </summary>
         [HttpPost("{ticketId}/test")]
         public async Task<IActionResult> MoveToTest(Guid ticketId)
         {
@@ -69,6 +87,9 @@ namespace MiniTrello.Web.Controllers
                 onFailure: (e) => BadRequest(e));
         }
 
+        /// <summary>
+        /// Moves a ticket to done
+        /// </summary>
         [HttpPost("{ticketId}/done")]
         public async Task<IActionResult> MoveToDone(Guid ticketId)
         {
@@ -79,6 +100,9 @@ namespace MiniTrello.Web.Controllers
                 onFailure: (e) => BadRequest(e));
         }
 
+        /// <summary>
+        /// Updates the ticket priority
+        /// </summary>
         [HttpPut("{ticketId}/priority")]
         public async Task<IActionResult> UpdatePriority(Guid ticketId, [FromBody] UpdatePriorityRequest request)
         {
@@ -89,6 +113,9 @@ namespace MiniTrello.Web.Controllers
                 onFailure: (e) => BadRequest(e));
         }
 
+        /// <summary>
+        /// Updates the ticket story points
+        /// </summary>
         [HttpPut("{ticketId}/story-points")]
         public async Task<IActionResult> UpdateStoryPoints(Guid ticketId, [FromBody] UpdateStoryPointsRequest request)
         {
@@ -99,6 +126,9 @@ namespace MiniTrello.Web.Controllers
                 onFailure: (e) => BadRequest(e));
         }
 
+        /// <summary>
+        /// Assings a ticket to an assignee
+        /// </summary>
         [HttpPut("{ticketId}/assignee")]
         public async Task<IActionResult> UpdateAssignee(Guid ticketId, [FromBody] UpdateAssigneeRequest request)
         {
@@ -109,6 +139,9 @@ namespace MiniTrello.Web.Controllers
                 onFailure: (e) => BadRequest(e));
         }
 
+        /// <summary>
+        /// Unassignes a ticket
+        /// </summary>
         [HttpPost("{ticketId}/unassign")]
         public async Task<IActionResult> UnassgineTicket(Guid ticketId)
         {
@@ -119,6 +152,9 @@ namespace MiniTrello.Web.Controllers
                 onFailure: (e) => BadRequest(e));
         }
 
+        /// <summary>
+        /// Deletes a ticket
+        /// </summary>
         [HttpDelete("{ticketId}")]
         public async Task<IActionResult> DeleteTicket(Guid ticketId)
         {
@@ -128,7 +164,10 @@ namespace MiniTrello.Web.Controllers
                 onSuccess: () => Ok(),
                 onFailure: (e) => BadRequest(e));
         }
-
+        
+        /// <summary>
+        /// Adds a comment to a ticket
+        /// </summary>
         [HttpPost("{ticketId}/comments")]
         public async Task<IActionResult> AddCommentToTicket(Guid ticketId, [FromBody] AddCommentRequest request)
         {
