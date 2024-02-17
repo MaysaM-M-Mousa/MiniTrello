@@ -56,6 +56,9 @@ namespace MiniTrello.Web.Controllers
                 onFailure: (e) => BadRequest(e));
         }
 
+        /// <summary>
+        /// Deletes a comment by Id
+        /// </summary>
         [HttpDelete("{commentId}")]
         public async Task<IActionResult> DeleteComment(Guid commentId)
         {
