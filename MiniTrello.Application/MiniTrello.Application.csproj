@@ -15,4 +15,8 @@
     <ProjectReference Include="..\MiniTrello.Domain\MiniTrello.Domain.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="CommentProjection\EventHandlers\" />
+  </ItemGroup>
+
 </Project>

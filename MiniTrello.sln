@@ -19,7 +19,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MiniTrello.UnitTests", "Min
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MiniTrello.ArchitectureTests", "MiniTrello.ArchitectureTests\MiniTrello.ArchitectureTests.csproj", "{C0976C15-D880-41A4-97AC-9FE34C76B01D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MiniTrello.Contracts", "MiniTrello.Contracts\MiniTrello.Contracts.csproj", "{60FC7743-B88B-467B-978B-6FA66B6575C4}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MiniTrello.Contracts", "MiniTrello.Contracts\MiniTrello.Contracts.csproj", "{60FC7743-B88B-467B-978B-6FA66B6575C4}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

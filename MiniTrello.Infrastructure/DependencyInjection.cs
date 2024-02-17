@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using MiniTrello.Domain.Ticket.Comment.Projections;
 using MiniTrello.Domain.Ticket.Projections.TicketDetails;
 using MiniTrello.Infrastructure.Persistence;
 using MiniTrello.Infrastructure.Persistence.Repositories;
@@ -13,6 +14,7 @@ public static class DependencyInjection
     {
         services.AddSingleton<IEventStore, InMemoryEventStore>();
         services.AddSingleton<ITicketDetailsProjectionRepository, InMemoryTicketDetailsProjectionRepository>();
+        services.AddSingleton<ICommentProjectionRepository, InMemoryCommentProjectionRepository>();
 
         services.AddDbContext<MiniTrelloDbContext>(
             opts => opts.UseSqlServer(configuration.GetConnectionString("MiniTrelloSqlServer"), 
