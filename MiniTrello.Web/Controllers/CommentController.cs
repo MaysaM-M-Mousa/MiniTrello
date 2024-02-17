@@ -1,6 +1,7 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using MiniTrello.Application.Comment.AddComment;
+using MiniTrello.Application.Comment.ModifyComment;
 using MiniTrello.Contracts.Comment;
 using MiniTrello.Domain.Primitives.Result;
 
@@ -33,6 +34,21 @@ namespace MiniTrello.Web.Controllers
             [FromBody] AddCommentRequest request)
         {
             var res = await _mediator.Send(new AddCommentCommand(ticketId, request.User, request.Content));
+
+            return res.Match<IActionResult>(
+                onSuccess: () => Ok(),
+                onFailure: (e) => BadRequest(e));
+        }
+
+        /// <summary>
+        /// Modifies a comment content
+        /// </summary>
+        [HttpPut("{commentId}")]
+        public async Task<IActionResult> ModifyComment(
+            Guid commentId,
+            [FromBody] ModifyCommentRequest request)
+        {
+            var res = await _mediator.Send(new ModifyCommentCommand(commentId, request.Content));
 
             return res.Match<IActionResult>(
                 onSuccess: () => Ok(),

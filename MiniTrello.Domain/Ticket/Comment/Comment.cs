@@ -72,13 +72,16 @@ public class Comment : AggregateRoot
 
         return comment;
     }
-               
+    
     public override void When(IDomainEvent @event) 
     {
         switch (@event)
         {
             case CommentAddedDomainEvent:
                 Apply((CommentAddedDomainEvent)@event);
+                break;
+            case CommentContentModifiedDomainEvent:
+                Apply((CommentContentModifiedDomainEvent)@event);
                 break;
             case CommentDeletedDomainEvent:
                 Apply((CommentDeletedDomainEvent)@event);
