@@ -1,6 +1,7 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using MiniTrello.Application.Comment.AddComment;
+using MiniTrello.Application.Comment.DeleteComment;
 using MiniTrello.Application.Comment.ModifyComment;
 using MiniTrello.Contracts.Comment;
 using MiniTrello.Domain.Primitives.Result;
@@ -49,6 +50,16 @@ namespace MiniTrello.Web.Controllers
             [FromBody] ModifyCommentRequest request)
         {
             var res = await _mediator.Send(new ModifyCommentCommand(commentId, request.Content));
+
+            return res.Match<IActionResult>(
+                onSuccess: () => Ok(),
+                onFailure: (e) => BadRequest(e));
+        }
+
+        [HttpDelete("{commentId}")]
+        public async Task<IActionResult> DeleteComment(Guid commentId)
+        {
+            var res = await _mediator.Send(new DeleteCommentCommand(commentId));
 
             return res.Match<IActionResult>(
                 onSuccess: () => Ok(),
