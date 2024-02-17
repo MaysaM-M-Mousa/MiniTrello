@@ -17,6 +17,8 @@ public class Comment : AggregateRoot
         TicketId = ticketId;
     }
 
+    private Comment(Guid aggregateId) : base(aggregateId) { }
+
     public static Result<Comment> CreateComment(Guid ticketId, string user, string content)
     {
         var comment = new Comment(Guid.NewGuid(), ticketId);
@@ -59,9 +61,9 @@ public class Comment : AggregateRoot
         return Result.Success();
     }
 
-    public static Comment Load(Guid commentId, Guid ticketId, List<IDomainEvent> events)
+    public static Comment Load(Guid commentId, List<IDomainEvent> events)
     {
-        var comment = new Comment(commentId, ticketId);
+        var comment = new Comment(commentId);
 
         foreach (var @event in events)
         {

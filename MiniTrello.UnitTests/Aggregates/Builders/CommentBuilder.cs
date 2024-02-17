@@ -31,7 +31,7 @@ public class CommentBuilder
 
     public Comment Build()
     {
-        var comment = Comment.Load(_commentId, _ticketId, _events);
+        var comment = Comment.Load(_commentId, _events);
 
         _events.Clear();
 
