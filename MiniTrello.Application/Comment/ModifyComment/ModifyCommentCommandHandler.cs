@@ -3,7 +3,7 @@ using MiniTrello.Domain.Primitives.Result;
 
 namespace MiniTrello.Application.Comment.ModifyComment;
 
-internal class ModifyCommentCommandHandler : IRequestHandler<ModifyCommentCommand, Result>
+internal sealed class ModifyCommentCommandHandler : IRequestHandler<ModifyCommentCommand, Result>
 {
     private readonly IEventStore _eventStore;
     private readonly IMediator _mediator;
