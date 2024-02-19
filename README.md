@@ -1,7 +1,6 @@
 # MiniTrello
 
-MiniTrello is a side project meant to simulate a simple behavior for the famous software project management app **Trello** using **Event Sourcing** pattern.
-
+MiniTrello is a side project meant to simulate a simple behavior for the famous software project management app **Trello** using **Event Sourcing** pattern. Currently **MiniTrello** implements in-memory event store.
 <br>
 
 ## MiniTrello:
@@ -13,13 +12,12 @@ MiniTrello is a side project meant to simulate a simple behavior for the famous 
   * Writing architectural tests
   * Api Versioning
   * Structured Logging
-  * Implementing Outbox Pattern
-  * Implementing Idempotent consumers
  
 
 <br>
 
 ## MiniTrello's behavior:
+MiniTrello currently has 2 aggregates: **Ticket** and **Comment**, each ticket can have comments and any action to them is recorded as a new event.  
 
 <br>
 
@@ -33,5 +31,9 @@ As stated in the diagram; once the ticket is created we can:
   * InProgress -> CodeReview
   * CodeReview -> Test
   * Test -> InProgress | Done
- 
+
+ For Comments, there are three actions we can do for now:
+ * Create a comment
+ * Modify the comment content
+ * Delete a comment 
 
