@@ -22,7 +22,7 @@ internal sealed class DeleteCommentCommandHandler : IRequestHandler<DeleteCommen
 
         var comment = Domain.Ticket.Comment.Comment.Load(request.CommentId, events);
 
-        var result = comment.DeleteComment();
+        var result = comment.Delete();
 
         if (result.IsFailure)
         {

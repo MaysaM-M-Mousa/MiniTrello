@@ -41,7 +41,7 @@ public sealed class Ticket : AggregateRoot
             return TicketErrors.DeletedTicket();
         }
 
-        return Comment.Comment.CreateComment(AggregateId, user, content);
+        return Comment.Comment.Create(AggregateId, user, content);
     }
 
     public Result Assign(string assignee)

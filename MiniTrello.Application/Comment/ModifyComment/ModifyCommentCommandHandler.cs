@@ -22,7 +22,7 @@ internal sealed class ModifyCommentCommandHandler : IRequestHandler<ModifyCommen
 
         var comment = Domain.Ticket.Comment.Comment.Load(request.CommentId, commentEvents);
 
-        var result = comment.ModifyCommentContent(request.content);
+        var result = comment.ModifyContent(request.content);
 
         if (result.IsFailure)
         {

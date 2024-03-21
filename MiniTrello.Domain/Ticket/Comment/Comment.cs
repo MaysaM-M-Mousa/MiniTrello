@@ -19,7 +19,7 @@ public class Comment : AggregateRoot
 
     private Comment(Guid aggregateId) : base(aggregateId) { }
 
-    public static Result<Comment> CreateComment(Guid ticketId, string user, string content)
+    public static Result<Comment> Create(Guid ticketId, string user, string content)
     {
         var comment = new Comment(Guid.NewGuid(), ticketId);
 
@@ -31,7 +31,7 @@ public class Comment : AggregateRoot
         return comment;
     }
 
-    public Result ModifyCommentContent(string content)
+    public Result ModifyContent(string content)
     {
         if (IsDeleted)
         {
@@ -46,7 +46,7 @@ public class Comment : AggregateRoot
         return Result.Success();
     }
 
-    public Result DeleteComment() 
+    public Result Delete() 
     {
         if (IsDeleted)
         {

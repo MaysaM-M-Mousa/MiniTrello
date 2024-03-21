@@ -11,7 +11,7 @@ public class Comment_ModifyContent
     {
         var comment = new CommentBuilder().BuildNewlyAddedComment();
 
-        var result = comment.ModifyCommentContent("new comment content!");
+        var result = comment.ModifyContent("new comment content!");
 
         result.IsSuccess.Should().BeTrue();
         comment.UncommittedEvents.Single().Should().BeOfType(typeof(CommentContentModifiedDomainEvent));
@@ -22,7 +22,7 @@ public class Comment_ModifyContent
     {
         var comment = new CommentBuilder().BuildDeletedComment();
 
-        var result = comment.ModifyCommentContent("new comment content!");
+        var result = comment.ModifyContent("new comment content!");
 
         result.IsFailure.Should().BeTrue();
         result.Error.Code.Should().Be("MiniTrello.Comment.DeletedComment");

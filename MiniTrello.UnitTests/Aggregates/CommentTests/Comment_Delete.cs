@@ -11,7 +11,7 @@ public class Comment_Delete
     {
         var comment = new CommentBuilder().BuildNewlyAddedComment();
 
-        var result = comment.DeleteComment();
+        var result = comment.Delete();
 
         result.IsSuccess.Should().BeTrue();
         comment.UncommittedEvents.Count.Should().Be(1);
@@ -23,7 +23,7 @@ public class Comment_Delete
     {
         var comment = new CommentBuilder().BuildDeletedComment();
 
-        var result = comment.DeleteComment();
+        var result = comment.Delete();
 
         result.IsFailure.Should().BeTrue();
         result.Error.Should().NotBeNull();
