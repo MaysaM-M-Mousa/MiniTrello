@@ -1,4 +1,5 @@
 ﻿using FluentAssertions;
+using FluentAssertions.Execution;
 using MiniTrello.Domain.Ticket;
 using MiniTrello.Domain.Ticket.DomainEvents;
 using MiniTrello.UnitTests.Aggregates.Builders;
@@ -14,10 +15,13 @@ public class Ticket_MoveToInProgress
 
         var result = ticket.MoveToInProgress();
 
-        result.IsSuccess.Should().BeTrue();
-        ticket.Status.Should().Be(TicketStatus.InProgress);
-        ticket.UncommittedEvents.Count.Should().Be(1);
-        ticket.UncommittedEvents.Single().Should().BeOfType(typeof(TicketMovedToInProgressDomainEvent));
+        using (new AssertionScope())
+        {
+            result.IsSuccess.Should().BeTrue();
+            ticket.Status.Should().Be(TicketStatus.InProgress);
+            ticket.UncommittedEvents.Count.Should().Be(1);
+            ticket.UncommittedEvents.Single().Should().BeOfType(typeof(TicketMovedToInProgressDomainEvent));
+        }
     }
 
     [Fact]
@@ -26,11 +30,14 @@ public class Ticket_MoveToInProgress
         var ticket = new TicketBuilder().BuildTestStatusTicket();
 
         var result = ticket.MoveToInProgress();
-
-        result.IsSuccess.Should().BeTrue();
-        ticket.Status.Should().Be(TicketStatus.InProgress);
-        ticket.UncommittedEvents.Count.Should().Be(1);
-        ticket.UncommittedEvents.Single().Should().BeOfType(typeof(TicketMovedToInProgressDomainEvent));
+        
+        using (new AssertionScope())
+        {
+            result.IsSuccess.Should().BeTrue();
+            ticket.Status.Should().Be(TicketStatus.InProgress);
+            ticket.UncommittedEvents.Count.Should().Be(1);
+            ticket.UncommittedEvents.Single().Should().BeOfType(typeof(TicketMovedToInProgressDomainEvent));
+        }
     }
 
     [Fact]
@@ -39,10 +46,13 @@ public class Ticket_MoveToInProgress
         var ticket = new TicketBuilder().BuildInProgressStatusTicket();
 
         var result = ticket.MoveToInProgress();
-
-        result.IsFailure.Should().BeTrue();
-        ticket.Status.Should().Be(TicketStatus.InProgress);
-        ticket.UncommittedEvents.Should().BeEmpty();
+        
+        using (new AssertionScope())
+        {
+            result.IsFailure.Should().BeTrue();
+            ticket.Status.Should().Be(TicketStatus.InProgress);
+            ticket.UncommittedEvents.Should().BeEmpty();
+        }
     }
 
     [Fact]
@@ -51,10 +61,13 @@ public class Ticket_MoveToInProgress
         var ticket = new TicketBuilder().BuildCodeReviewStatusTicket();
 
         var result = ticket.MoveToInProgress();
-
-        result.IsFailure.Should().BeTrue();
-        result.Error.Should().NotBeNull();
-        result.Error.Code.Should().Be("MiniTrello.Ticket.InvalidOperation");
+        
+        using (new AssertionScope())
+        {
+            result.IsFailure.Should().BeTrue();
+            result.Error.Should().NotBeNull();
+            result.Error.Code.Should().Be("MiniTrello.Ticket.InvalidOperation");
+        }
     }
 
     [Fact]
@@ -63,10 +76,13 @@ public class Ticket_MoveToInProgress
         var ticket = new TicketBuilder().BuildDoneStatusTicket();
 
         var result = ticket.MoveToInProgress();
-
-        result.IsFailure.Should().BeTrue();
-        result.Error.Should().NotBeNull();
-        result.Error.Code.Should().Be("MiniTrello.Ticket.InvalidOperation");
+        
+        using (new AssertionScope())
+        {
+            result.IsFailure.Should().BeTrue();
+            result.Error.Should().NotBeNull();
+            result.Error.Code.Should().Be("MiniTrello.Ticket.InvalidOperation");
+        }
     }
 
     [Fact]
@@ -76,9 +92,12 @@ public class Ticket_MoveToInProgress
 
         var result = ticket.MoveToInProgress();
         
-        result.IsFailure.Should().BeTrue();
-        result.Error.Should().NotBeNull();
-        result.Error.Code.Should().Be("MiniTrello.Ticket.UnassignedTicket");
+        using (new AssertionScope())
+        {
+            result.IsFailure.Should().BeTrue();
+            result.Error.Should().NotBeNull();
+            result.Error.Code.Should().Be("MiniTrello.Ticket.UnassignedTicket");
+        }
     }
 
     [Fact]
@@ -87,9 +106,12 @@ public class Ticket_MoveToInProgress
         var ticket = new TicketBuilder().BuildDeletedTicket();
 
         var result = ticket.MoveToInProgress();
-
-        result.IsFailure.Should().BeTrue();
-        result.Error.Should().NotBeNull();
-        result.Error.Code.Should().Be("MiniTrello.Ticket.DeletedTicket");
+        
+        using (new AssertionScope())
+        {
+            result.IsFailure.Should().BeTrue();
+            result.Error.Should().NotBeNull();
+            result.Error.Code.Should().Be("MiniTrello.Ticket.DeletedTicket");
+        }
     }
 }

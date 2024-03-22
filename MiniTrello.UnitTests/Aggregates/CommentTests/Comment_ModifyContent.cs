@@ -1,4 +1,5 @@
 ﻿using FluentAssertions;
+using FluentAssertions.Execution;
 using MiniTrello.Domain.Ticket.Comment.DomainEvents;
 using MiniTrello.UnitTests.Aggregates.Builders;
 
@@ -13,8 +14,11 @@ public class Comment_ModifyContent
 
         var result = comment.ModifyContent("new comment content!");
 
-        result.IsSuccess.Should().BeTrue();
-        comment.UncommittedEvents.Single().Should().BeOfType(typeof(CommentContentModifiedDomainEvent));
+        using (new AssertionScope())
+        {
+            result.IsSuccess.Should().BeTrue();
+            comment.UncommittedEvents.Single().Should().BeOfType(typeof(CommentContentModifiedDomainEvent));
+        }
     }
 
     [Fact]
@@ -24,8 +28,11 @@ public class Comment_ModifyContent
 
         var result = comment.ModifyContent("new comment content!");
 
-        result.IsFailure.Should().BeTrue();
-        result.Error.Code.Should().Be("MiniTrello.Comment.DeletedComment");
-        comment.UncommittedEvents.Count.Should().Be(0);
+        using (new AssertionScope())
+        {
+            result.IsFailure.Should().BeTrue();
+            result.Error.Code.Should().Be("MiniTrello.Comment.DeletedComment");
+            comment.UncommittedEvents.Count.Should().Be(0);
+        }
     }
 }

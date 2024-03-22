@@ -1,4 +1,5 @@
 ﻿using FluentAssertions;
+using FluentAssertions.Execution;
 using MiniTrello.Domain.Ticket.Comment;
 using MiniTrello.Domain.Ticket.Comment.DomainEvents;
 
@@ -11,9 +12,12 @@ public class Comment_Add
     {
         var result = Comment.Create(Guid.NewGuid(), "Maysam", "Some content");
 
-        result.IsSuccess.Should().BeTrue();
-        var addComment = result.Value;
-        addComment.UncommittedEvents.Count.Should().Be(1);
-        addComment.UncommittedEvents.Single().Should().BeOfType(typeof(CommentAddedDomainEvent));
+        using (new AssertionScope())
+        {
+            result.IsSuccess.Should().BeTrue();
+            var addComment = result.Value;
+            addComment.UncommittedEvents.Count.Should().Be(1);
+            addComment.UncommittedEvents.Single().Should().BeOfType(typeof(CommentAddedDomainEvent));
+        }
     }
 }

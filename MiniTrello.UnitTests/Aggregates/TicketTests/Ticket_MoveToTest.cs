@@ -1,4 +1,5 @@
 ﻿using FluentAssertions;
+using FluentAssertions.Execution;
 using MiniTrello.Domain.Ticket;
 using MiniTrello.Domain.Ticket.DomainEvents;
 using MiniTrello.UnitTests.Aggregates.Builders;
@@ -14,10 +15,13 @@ public class Ticket_MoveToTest
 
         var result = ticket.MoveToTest();
 
-        result.IsSuccess.Should().BeTrue();
-        ticket.Status.Should().Be(TicketStatus.Test);
-        ticket.UncommittedEvents.Count.Should().Be(1);
-        ticket.UncommittedEvents.Single().Should().BeOfType(typeof(TicketMovedToTestDomainEvent));
+        using (new AssertionScope())
+        {
+            result.IsSuccess.Should().BeTrue();
+            ticket.Status.Should().Be(TicketStatus.Test);
+            ticket.UncommittedEvents.Count.Should().Be(1);
+            ticket.UncommittedEvents.Single().Should().BeOfType(typeof(TicketMovedToTestDomainEvent));
+        }
     }
 
     [Fact]
@@ -27,9 +31,12 @@ public class Ticket_MoveToTest
 
         var result = ticket.MoveToTest();
 
-        result.IsFailure.Should().BeTrue();
-        ticket.Status.Should().Be(TicketStatus.Test);
-        ticket.UncommittedEvents.Should().BeEmpty();
+        using (new AssertionScope())
+        {
+            result.IsFailure.Should().BeTrue();
+            ticket.Status.Should().Be(TicketStatus.Test);
+            ticket.UncommittedEvents.Should().BeEmpty();
+        }
     }
 
     [Fact]
@@ -39,9 +46,12 @@ public class Ticket_MoveToTest
 
         var result = ticket.MoveToTest();
 
-        result.IsFailure.Should().BeTrue();
-        result.Error.Should().NotBeNull();
-        result.Error.Code.Should().Be("MiniTrello.Ticket.InvalidOperation");
+        using (new AssertionScope())
+        {
+            result.IsFailure.Should().BeTrue();
+            result.Error.Should().NotBeNull();
+            result.Error.Code.Should().Be("MiniTrello.Ticket.InvalidOperation");
+        }
     }
 
     [Fact]
@@ -51,8 +61,11 @@ public class Ticket_MoveToTest
 
         var result = ticket.MoveToTest();
 
-        result.IsFailure.Should().BeTrue();
-        result.Error.Should().NotBeNull();
-        result.Error.Code.Should().Be("MiniTrello.Ticket.DeletedTicket");
+        using (new AssertionScope())
+        {
+            result.IsFailure.Should().BeTrue();
+            result.Error.Should().NotBeNull();
+            result.Error.Code.Should().Be("MiniTrello.Ticket.DeletedTicket");
+        }
     }
 }

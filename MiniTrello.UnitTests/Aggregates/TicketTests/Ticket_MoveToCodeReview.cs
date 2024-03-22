@@ -2,7 +2,7 @@
 using MiniTrello.Domain.Ticket.DomainEvents;
 using MiniTrello.Domain.Ticket;
 using MiniTrello.UnitTests.Aggregates.Builders;
-using MiniTrello.Domain.Exceptions;
+using FluentAssertions.Execution;
 
 namespace MiniTrello.UnitTests.Aggregates.TicketTests;
 
@@ -15,10 +15,13 @@ public class Ticket_MoveToCodeReview
 
         var result = ticket.MoveToCodeReview();
 
-        result.IsSuccess.Should().BeTrue();
-        ticket.Status.Should().Be(TicketStatus.CodeReview);
-        ticket.UncommittedEvents.Count.Should().Be(1);
-        ticket.UncommittedEvents.Single().Should().BeOfType(typeof(TicketMovedToCodeReviewDomainEvent));
+        using (new AssertionScope())
+        {
+            result.IsSuccess.Should().BeTrue();
+            ticket.Status.Should().Be(TicketStatus.CodeReview);
+            ticket.UncommittedEvents.Count.Should().Be(1);
+            ticket.UncommittedEvents.Single().Should().BeOfType(typeof(TicketMovedToCodeReviewDomainEvent));
+        }
     }
 
     [Fact]
@@ -28,9 +31,12 @@ public class Ticket_MoveToCodeReview
 
         var result = ticket.MoveToCodeReview();
 
-        result.IsFailure.Should().BeTrue();
-        ticket.Status.Should().Be(TicketStatus.CodeReview);
-        ticket.UncommittedEvents.Should().BeEmpty();
+        using (new AssertionScope())
+        {
+            result.IsFailure.Should().BeTrue();
+            ticket.Status.Should().Be(TicketStatus.CodeReview);
+            ticket.UncommittedEvents.Should().BeEmpty();
+        }
     }
 
     [Fact]
@@ -40,11 +46,12 @@ public class Ticket_MoveToCodeReview
 
         var result = ticket.MoveToCodeReview();
 
-        result.IsFailure.Should().BeTrue();
-
-        result.IsFailure.Should().BeTrue();
-        result.Error.Should().NotBeNull();
-        result.Error.Code.Should().Be("MiniTrello.Ticket.InvalidOperation");
+        using (new AssertionScope())
+        {
+            result.IsFailure.Should().BeTrue();
+            result.Error.Should().NotBeNull();
+            result.Error.Code.Should().Be("MiniTrello.Ticket.InvalidOperation");
+        }
     }
 
     [Fact]
@@ -54,8 +61,11 @@ public class Ticket_MoveToCodeReview
 
         var result = ticket.MoveToCodeReview();
 
-        result.IsFailure.Should().BeTrue();
-        result.Error.Should().NotBeNull();
-        result.Error.Code.Should().Be("MiniTrello.Ticket.DeletedTicket");
+        using (new AssertionScope())
+        {
+            result.IsFailure.Should().BeTrue();
+            result.Error.Should().NotBeNull();
+            result.Error.Code.Should().Be("MiniTrello.Ticket.DeletedTicket");
+        }
     }
 }

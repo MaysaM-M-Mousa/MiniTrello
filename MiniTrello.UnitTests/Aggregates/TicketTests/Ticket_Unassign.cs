@@ -1,4 +1,5 @@
 ﻿using FluentAssertions;
+using FluentAssertions.Execution;
 using MiniTrello.Domain.Ticket.DomainEvents;
 using MiniTrello.UnitTests.Aggregates.Builders;
 
@@ -13,9 +14,12 @@ public class Ticket_Unassign
 
         var result = ticket.Unassign();
 
-        result.IsFailure.Should().BeTrue();
-        result.Error.Should().NotBeNull();
-        result.Error.Code.Should().Be("MiniTrello.Ticket.UnassignedTicket");
+        using (new AssertionScope())
+        {
+            result.IsFailure.Should().BeTrue();
+            result.Error.Should().NotBeNull();
+            result.Error.Code.Should().Be("MiniTrello.Ticket.UnassignedTicket");
+        }
     }
 
     [Fact]
@@ -25,10 +29,13 @@ public class Ticket_Unassign
 
         var result = ticket.Unassign();
 
-        result.IsSuccess.Should().BeTrue();
-        ticket.Assignee.Should().Be(string.Empty);
-        ticket.UncommittedEvents.Count.Should().Be(1);
-        ticket.UncommittedEvents.Single().Should().BeOfType(typeof(TicketUnassignedDomainEvent));
+        using (new AssertionScope())
+        {
+            result.IsSuccess.Should().BeTrue();
+            ticket.Assignee.Should().Be(string.Empty);
+            ticket.UncommittedEvents.Count.Should().Be(1);
+            ticket.UncommittedEvents.Single().Should().BeOfType(typeof(TicketUnassignedDomainEvent));
+        }
     }
 
     [Fact]
@@ -38,8 +45,11 @@ public class Ticket_Unassign
 
         var result = ticket.Unassign();
 
-        result.IsFailure.Should().BeTrue();
-        result.Error.Should().NotBeNull();
-        result.Error.Code.Should().Be("MiniTrello.Ticket.DeletedTicket");
+        using (new AssertionScope())
+        {
+            result.IsFailure.Should().BeTrue();
+            result.Error.Should().NotBeNull();
+            result.Error.Code.Should().Be("MiniTrello.Ticket.DeletedTicket");
+        }
     }
 }

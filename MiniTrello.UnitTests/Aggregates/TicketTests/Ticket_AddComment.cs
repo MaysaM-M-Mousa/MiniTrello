@@ -1,4 +1,5 @@
 ﻿using FluentAssertions;
+using FluentAssertions.Execution;
 using MiniTrello.Domain.Ticket.Comment.DomainEvents;
 using MiniTrello.UnitTests.Aggregates.Builders;
 
@@ -13,9 +14,12 @@ public class Ticket_AddComment
 
         var result = ticket.AddComment("Maysam", "this is the ticket content!");
 
-        result.IsSuccess.Should().BeTrue();
-        var addedComment = result.Value;
-        addedComment.UncommittedEvents.Single().Should().BeOfType(typeof(CommentAddedDomainEvent));
+        using (new AssertionScope())
+        {
+            result.IsSuccess.Should().BeTrue();
+            var addedComment = result.Value;
+            addedComment.UncommittedEvents.Single().Should().BeOfType(typeof(CommentAddedDomainEvent));
+        }
     }
 
     [Fact]
@@ -25,7 +29,10 @@ public class Ticket_AddComment
 
         var result = ticket.AddComment("Maysam", "this is the ticket content!");
 
-        result.IsFailure.Should().BeTrue();
-        result.Error.Code.Should().Be("MiniTrello.Ticket.DeletedTicket");
+        using (new AssertionScope())
+        {
+            result.IsFailure.Should().BeTrue();
+            result.Error.Code.Should().Be("MiniTrello.Ticket.DeletedTicket");
+        }
     }
 }

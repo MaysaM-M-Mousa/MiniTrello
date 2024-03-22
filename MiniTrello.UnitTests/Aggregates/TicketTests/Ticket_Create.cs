@@ -1,4 +1,5 @@
 ﻿using FluentAssertions;
+using FluentAssertions.Execution;
 using MiniTrello.Domain.Ticket;
 using MiniTrello.Domain.Ticket.DomainEvents;
 
@@ -11,11 +12,14 @@ public class Ticket_Create
     {
         var result = Ticket.Create();
 
-        result.IsSuccess.Should().BeTrue();
-        var createdTicket = result.Value;
-        createdTicket.Assignee.Should().Be(string.Empty);
-        createdTicket.Status.Should().Be(TicketStatus.ToDo);
-        createdTicket.UncommittedEvents.Count.Should().Be(1);
-        createdTicket.UncommittedEvents.Single().Should().BeOfType(typeof(TicketCreatedDomainEvent));
+        using (new AssertionScope())
+        {
+            result.IsSuccess.Should().BeTrue();
+            var createdTicket = result.Value;
+            createdTicket.Assignee.Should().Be(string.Empty);
+            createdTicket.Status.Should().Be(TicketStatus.ToDo);
+            createdTicket.UncommittedEvents.Count.Should().Be(1);
+            createdTicket.UncommittedEvents.Single().Should().BeOfType(typeof(TicketCreatedDomainEvent));
+        }
     }
 }
